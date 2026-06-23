@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - PawPrints</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <style>
+        html { font-size: 14px; } /* Scales down all rem-based text sizes globally */
+        .dash-section { display: none; animation: fadeIn 0.3s ease; }
+        .dash-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Dark Sidebar Overrides */
+        .admin-sidebar .sidebar-link { color: rgba(255,255,255,0.7); }
+        .admin-sidebar .sidebar-link:hover { background: rgba(255,255,255,0.1); color: white; }
+        .admin-sidebar .sidebar-link.active { background: var(--primary-color); color: white; }
+        
+        /* Progress Bars */
+        .progress-bar-bg { background: rgba(0,0,0,0.05); border-radius: 100px; height: 8px; width: 100%; overflow: hidden; }
+        .progress-bar-fill { height: 100%; border-radius: 100px; }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-container {
+            background: #ffffff; border-radius: var(--radius-lg);
+            width: 100%; max-width: 500px; padding: 2rem; box-shadow: var(--shadow-lg);
+            transform: translateY(20px); transition: transform 0.3s ease;
+            max-height: 80vh; overflow-y: auto;
+            -ms-overflow-style: none; scrollbar-width: none;
+        }
+        .modal-container::-webkit-scrollbar { display: none; }
+        .modal-overlay.active .modal-container { transform: translateY(0); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .modal-title { font-size: 1.5rem; color: var(--text-dark); margin: 0; }
+        .modal-close { background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer; transition: color 0.2s ease; }
+        .modal-close:hover { color: var(--primary-color); }
+        .modal-container .auth-input { border: 1px solid #d1d5db; background: #ffffff; }
+    </style>
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar admin-sidebar" style="background: #111827; border-right: none;">
+            <div class="sidebar-brand" style="display: flex; justify-content: space-between; align-items: center; width: 100%; padding-right: 1.5rem;">
+                <a href="index.html" class="logo" style="text-decoration: none;">
+                    <i class="ph-fill ph-paw-print logo-icon" style="color: white;"></i>
+                    <div class="logo-text">
+                        <span class="logo-title" style="color: white;">PawPrints</span>
+                        <span class="logo-subtitle" style="color: rgba(255,255,255,0.5); font-size: 0.8rem;">Admin Panel</span>
+                    </div>
+                </a>
+                <button class="dash-sidebar-close" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;"><i class="ph-bold ph-x"></i></button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="#" class="sidebar-link active" data-target="overview"><i class="ph ph-squares-four"></i> Dashboard</a>
+                <a href="#" class="sidebar-link" data-target="appointments"><i class="ph ph-calendar-check"></i> Appointments</a>
+                <a href="#" class="sidebar-link" data-target="payments"><i class="ph ph-credit-card"></i> Payments</a>
+                <a href="#" class="sidebar-link" data-target="patients"><i class="ph ph-users"></i> Patients & Clients</a>
+                <a href="#" class="sidebar-link" data-target="content"><i class="ph ph-globe"></i> Content Manager</a>
+                <a href="#" class="sidebar-link" data-target="settings"><i class="ph ph-gear"></i> Settings</a>
+            </nav>
+            
+            <div style="margin-top: auto; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; gap: 1rem;">
+                <div style="display: flex; align-items: center; background: rgba(255, 255, 255, 0.08); border-radius: 100px; padding: 0.25rem; border: 1px solid rgba(255, 255, 255, 0.15); margin: 0 1rem; justify-content: center;">
+                    <button id="theme-toggle" class="top-toggle-btn" aria-label="Toggle Dark Mode" style="background: transparent; border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: white; transition: all 0.3s ease;">
+                        <i class="ph-bold ph-moon" style="font-size: 1.1rem;"></i>
+                    </button>
+                    <div style="width: 1px; height: 20px; background: rgba(255, 255, 255, 0.2); margin: 0 0.25rem;"></div>
+                    <button id="rtl-toggle" class="top-toggle-btn" aria-label="Toggle RTL" style="background: transparent; border: none; height: 36px; padding: 0 0.75rem; border-radius: 100px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: white; font-size: 0.85rem; font-weight: 800; letter-spacing: 0.5px; transition: all 0.3s ease;">
+                        RTL
+                    </button>
+                </div>
+                <a href="login.html" class="sidebar-link" style="color: #F87171 !important;"><i class="ph ph-sign-out"></i> Log Out</a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Header -->
+            <header class="dashboard-header">
+                <button class="dash-mobile-toggle" aria-label="Open dashboard menu"><i class="ph-bold ph-list"></i></button>
+                <div>
+                    <h1>System Overview</h1>
+                    <p style="color: var(--text-muted); margin-top: 0.5rem;" id="header-subtitle">Here is what's happening at the clinic today.</p>
+                </div>
+                <div class="user-profile-menu" style="margin-left: auto;">
+                    <img src="https://i.pravatar.cc/150?img=11" alt="Admin" class="user-avatar">
+                </div>
+            </header>
+
+            <!-- SECTION 1: OVERVIEW -->
+            <section id="overview" class="dash-section active">
+                <!-- Quick Stats -->
+                <div class="dash-grid">
+                    <div class="dash-card">
+                        <div class="dash-stat">
+                            <div class="dash-stat-icon" style="background: rgba(140, 108, 201, 0.15); color: var(--primary-color);">
+                                <i class="ph-fill ph-calendar"></i>
+                            </div>
+                            <div class="dash-stat-info">
+                                <p>Appointments Today</p>
+                                <h3>24</h3>
+                                <p style="color: #059669; font-size: 0.85rem;"><i class="ph-bold ph-arrow-up"></i> 12% vs last week</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dash-card">
+                        <div class="dash-stat">
+                            <div class="dash-stat-icon" style="background: rgba(16, 185, 129, 0.15); color: #059669;">
+                                <i class="ph-fill ph-currency-dollar"></i>
+                            </div>
+                            <div class="dash-stat-info">
+                                <p>Revenue Today</p>
+                                <h3>$4,250</h3>
+                                <p style="color: #059669; font-size: 0.85rem;"><i class="ph-bold ph-arrow-up"></i> 5% vs last week</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dash-card">
+                        <div class="dash-stat">
+                            <div class="dash-stat-icon" style="background: rgba(245, 158, 11, 0.15); color: #D97706;">
+                                <i class="ph-fill ph-clock-countdown"></i>
+                            </div>
+                            <div class="dash-stat-info">
+                                <p>Pending Payments</p>
+                                <h3>7</h3>
+                                <p style="color: #DC2626; font-size: 0.85rem;"><i class="ph-bold ph-warning"></i> Action required</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dash-card">
+                        <div class="dash-stat">
+                            <div class="dash-stat-icon" style="background: rgba(59, 130, 246, 0.15); color: #3B82F6;">
+                                <i class="ph-fill ph-users-three"></i>
+                            </div>
+                            <div class="dash-stat-info">
+                                <p>New Clients</p>
+                                <h3>5</h3>
+                                <p style="color: #059669; font-size: 0.85rem;"><i class="ph-bold ph-arrow-up"></i> 2 new this week</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
+                    
+                    <!-- Today's Appointments Table -->
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                            <h2 style="font-size: 1.5rem; margin: 0; color: var(--text-dark);">Today's Schedule</h2>
+                            <a href="#" style="color: var(--primary-color); font-size: 0.9rem; font-weight: 600;" onclick="document.querySelector('[data-target=\'appointments\']').click()">View All</a>
+                        </div>
+                        <div class="dash-table-wrapper">
+                            <table class="dash-table">
+                                <thead>
+                                    <tr>
+                                        <th>Time</th>
+                                        <th>Client / Pet</th>
+                                        <th>Doctor</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="font-weight: 600; color: var(--text-dark);">09:00 AM</td>
+                                        <td>
+                                            <div style="font-weight: 500; color: var(--text-dark);">John Doe</div>
+                                            <div style="font-size: 0.85rem; color: var(--text-muted);">Buddy (Dog)</div>
+                                        </td>
+                                        <td>Dr. Smith</td>
+                                        <td><span class="badge badge-success">Completed</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600; color: var(--text-dark);">09:30 AM</td>
+                                        <td>
+                                            <div style="font-weight: 500; color: var(--text-dark);">Alice Johnson</div>
+                                            <div style="font-size: 0.85rem; color: var(--text-muted);">Mittens (Cat)</div>
+                                        </td>
+                                        <td>Dr. Lee</td>
+                                        <td><span class="badge badge-success">Completed</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600; color: var(--text-dark);">10:00 AM</td>
+                                        <td>
+                                            <div style="font-weight: 500; color: var(--text-dark);">Robert Williams</div>
+                                            <div style="font-size: 0.85rem; color: var(--text-muted);">Rocky (Dog)</div>
+                                        </td>
+                                        <td>Dr. Smith</td>
+                                        <td><span class="badge badge-primary">In Progress</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600; color: var(--text-dark);">10:30 AM</td>
+                                        <td>
+                                            <div style="font-weight: 500; color: var(--text-dark);">Sarah Connor</div>
+                                            <div style="font-size: 0.85rem; color: var(--text-muted);">Max (Dog)</div>
+                                        </td>
+                                        <td>Dr. Lee</td>
+                                        <td><span class="badge badge-warning">Waiting</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600; color: var(--text-dark);">11:00 AM</td>
+                                        <td>
+                                            <div style="font-weight: 500; color: var(--text-dark);">Michael B.</div>
+                                            <div style="font-size: 0.85rem; color: var(--text-muted);">Luna (Cat)</div>
+                                        </td>
+                                        <td>Dr. Wilson</td>
+                                        <td><span class="badge badge-warning">Waiting</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600; color: var(--text-dark);">11:30 AM</td>
+                                        <td>
+                                            <div style="font-weight: 500; color: var(--text-dark);">Emily R.</div>
+                                            <div style="font-size: 0.85rem; color: var(--text-muted);">Charlie (Bird)</div>
+                                        </td>
+                                        <td>Dr. Smith</td>
+                                        <td><span class="badge badge-warning">Waiting</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Live Activity Feed -->
+                    <div>
+                        <h2 style="font-size: 1.5rem; margin: 0 0 1.5rem 0; color: var(--text-dark);">Live Activity</h2>
+                        <div class="dash-card">
+                            <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+                                <div style="display: flex; gap: 1rem;">
+                                    <div style="width: 35px; height: 35px; border-radius: 50%; background: rgba(16, 185, 129, 0.1); color: #059669; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                        <i class="ph-bold ph-check"></i>
+                                    </div>
+                                    <div>
+                                        <p style="margin: 0; font-size: 0.9rem; color: var(--text-dark);"><strong>Invoice #892</strong> was paid by John Doe</p>
+                                        <p style="margin: 0; font-size: 0.75rem; color: var(--text-muted);">10 mins ago</p>
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 1rem;">
+                                    <div style="width: 35px; height: 35px; border-radius: 50%; background: rgba(59, 130, 246, 0.1); color: #3B82F6; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                        <i class="ph-bold ph-calendar-plus"></i>
+                                    </div>
+                                    <div>
+                                        <p style="margin: 0; font-size: 0.9rem; color: var(--text-dark);"><strong>Sarah Connor</strong> booked an appointment</p>
+                                        <p style="margin: 0; font-size: 0.75rem; color: var(--text-muted);">25 mins ago</p>
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 1rem;">
+                                    <div style="width: 35px; height: 35px; border-radius: 50%; background: rgba(245, 158, 11, 0.1); color: #D97706; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                        <i class="ph-bold ph-user-plus"></i>
+                                    </div>
+                                    <div>
+                                        <p style="margin: 0; font-size: 0.9rem; color: var(--text-dark);">New client registered: <strong>Emily R.</strong></p>
+                                        <p style="margin: 0; font-size: 0.75rem; color: var(--text-muted);">1 hour ago</p>
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 1rem;">
+                                    <div style="width: 35px; height: 35px; border-radius: 50%; background: rgba(140, 108, 201, 0.1); color: var(--primary-color); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                        <i class="ph-bold ph-flask"></i>
+                                    </div>
+                                    <div>
+                                        <p style="margin: 0; font-size: 0.9rem; color: var(--text-dark);">Lab results uploaded for <strong>Max</strong></p>
+                                        <p style="margin: 0; font-size: 0.75rem; color: var(--text-muted);">2 hours ago</p>
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 1rem;">
+                                    <div style="width: 35px; height: 35px; border-radius: 50%; background: rgba(239, 68, 68, 0.1); color: #EF4444; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                        <i class="ph-bold ph-warning-circle"></i>
+                                    </div>
+                                    <div>
+                                        <p style="margin: 0; font-size: 0.9rem; color: var(--text-dark);">Low inventory alert: <strong>Heartworm Meds</strong></p>
+                                        <p style="margin: 0; font-size: 0.75rem; color: var(--text-muted);">4 hours ago</p>
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 1rem;">
+                                    <div style="width: 35px; height: 35px; border-radius: 50%; background: rgba(16, 185, 129, 0.1); color: #059669; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                        <i class="ph-bold ph-envelope"></i>
+                                    </div>
+                                    <div>
+                                        <p style="margin: 0; font-size: 0.9rem; color: var(--text-dark);"><strong>Dr. Wilson</strong> sent an email to client</p>
+                                        <p style="margin: 0; font-size: 0.75rem; color: var(--text-muted);">5 hours ago</p>
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 1rem;">
+                                    <div style="width: 35px; height: 35px; border-radius: 50%; background: rgba(245, 158, 11, 0.1); color: #D97706; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                        <i class="ph-bold ph-star"></i>
+                                    </div>
+                                    <div>
+                                        <p style="margin: 0; font-size: 0.9rem; color: var(--text-dark);">New 5-star review from <strong>George K.</strong></p>
+                                        <p style="margin: 0; font-size: 0.75rem; color: var(--text-muted);">Yesterday</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 2: APPOINTMENTS -->
+            <section id="appointments" class="dash-section">
+                <div class="dash-section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h2 style="font-size: 1.8rem; margin: 0; color: var(--text-dark);">Master Schedule</h2>
+                    <div style="display: flex; gap: 1rem;">
+                        <input type="text" class="auth-input" placeholder="Filter by patient..." style="padding: 0.5rem; width: auto;">
+                        <input type="date" class="auth-input" style="padding: 0.5rem; width: auto;" value="2026-06-19">
+                        <button class="btn btn-primary" style="border-radius: 100px;" onclick="openModal('bookingModal')"><i class="ph-bold ph-calendar-plus"></i> Manual Booking</button>
+                    </div>
+                </div>
+                
+                <div class="dash-table-wrapper">
+                    <table class="dash-table">
+                        <thead>
+                            <tr>
+                                <th>Time Slot</th>
+                                <th>Client Name</th>
+                                <th>Pet</th>
+                                <th>Reason</th>
+                                <th>Assigned Doctor</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="font-weight: 600;">09:00 AM</td>
+                                <td>John Doe</td>
+                                <td>Buddy</td>
+                                <td>General Checkup</td>
+                                <td>Dr. Smith</td>
+                                <td><span class="badge badge-success">Completed</span></td>
+                                <td><i class="ph-bold ph-pencil-simple" style="cursor: pointer;" title="Edit Booking" onclick="editBooking('John Doe', 'Buddy', '2026-06-19', '09:00', 'Dr. Smith', 'General Checkup')"></i></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 600;">09:30 AM</td>
+                                <td>Alice Johnson</td>
+                                <td>Mittens</td>
+                                <td>Vaccination</td>
+                                <td>Dr. Lee</td>
+                                <td><span class="badge badge-success">Completed</span></td>
+                                <td><i class="ph-bold ph-pencil-simple" style="cursor: pointer;" title="Edit Booking" onclick="editBooking('Alice Johnson', 'Mittens', '2026-06-19', '09:30', 'Dr. Lee', 'Vaccination')"></i></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 600;">10:00 AM</td>
+                                <td>Robert Williams</td>
+                                <td>Rocky</td>
+                                <td>Surgery Follow-up</td>
+                                <td>Dr. Smith</td>
+                                <td><span class="badge badge-primary">In Progress</span></td>
+                                <td><i class="ph-bold ph-pencil-simple" style="cursor: pointer;"></i></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 600;">10:30 AM</td>
+                                <td>Sarah Connor</td>
+                                <td>Max</td>
+                                <td>Dental Issue</td>
+                                <td>Dr. Lee</td>
+                                <td><span class="badge badge-primary">In Progress</span></td>
+                                <td><i class="ph-bold ph-pencil-simple" style="cursor: pointer;"></i></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 600;">11:00 AM</td>
+                                <td>Michael B.</td>
+                                <td>Luna</td>
+                                <td>Allergies</td>
+                                <td>Dr. Wilson</td>
+                                <td><span class="badge badge-warning">Waiting</span></td>
+                                <td><i class="ph-bold ph-pencil-simple" style="cursor: pointer;"></i></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 600;">11:30 AM</td>
+                                <td>Emily R.</td>
+                                <td>Charlie</td>
+                                <td>Wing Clipping</td>
+                                <td>Dr. Smith</td>
+                                <td><span class="badge badge-warning">Waiting</span></td>
+                                <td><i class="ph-bold ph-pencil-simple" style="cursor: pointer;"></i></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 600;">01:00 PM</td>
+                                <td>David Clark</td>
+                                <td>Zoe</td>
+                                <td>Vaccination</td>
+                                <td>Dr. Lee</td>
+                                <td><span class="badge badge-warning">Upcoming</span></td>
+                                <td><i class="ph-bold ph-pencil-simple" style="cursor: pointer;"></i></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 600;">01:30 PM</td>
+                                <td>Jessica M.</td>
+                                <td>Buster</td>
+                                <td>Weight Management</td>
+                                <td>Dr. Wilson</td>
+                                <td><span class="badge badge-warning">Upcoming</span></td>
+                                <td><i class="ph-bold ph-pencil-simple" style="cursor: pointer;"></i></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 600;">02:00 PM</td>
+                                <td>Tom H.</td>
+                                <td>Simba</td>
+                                <td>General Checkup</td>
+                                <td>Dr. Smith</td>
+                                <td><span class="badge badge-warning">Upcoming</span></td>
+                                <td><i class="ph-bold ph-pencil-simple" style="cursor: pointer;"></i></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 600;">02:45 PM</td>
+                                <td>Nancy W.</td>
+                                <td>Daisy</td>
+                                <td>Dental Issue</td>
+                                <td>Dr. Lee</td>
+                                <td><span class="badge badge-warning">Upcoming</span></td>
+                                <td><i class="ph-bold ph-pencil-simple" style="cursor: pointer;"></i></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 600;">03:30 PM</td>
+                                <td>George K.</td>
+                                <td>Oscar</td>
+                                <td>Skin Infection</td>
+                                <td>Dr. Wilson</td>
+                                <td><span class="badge badge-warning">Upcoming</span></td>
+                                <td><i class="ph-bold ph-pencil-simple" style="cursor: pointer;"></i></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 600;">04:15 PM</td>
+                                <td>Laura J.</td>
+                                <td>Lucy</td>
+                                <td>Microchipping</td>
+                                <td>Dr. Smith</td>
+                                <td><span class="badge badge-warning">Upcoming</span></td>
+                                <td><i class="ph-bold ph-pencil-simple" style="cursor: pointer;"></i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- SECTION 3: PAYMENTS -->
+            <section id="payments" class="dash-section">
+                <div class="dash-section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h2 style="font-size: 1.8rem; margin: 0; color: var(--text-dark);">Financial Ledger</h2>
+                    <button class="btn btn-outline" style="border-radius: 100px;"><i class="ph-bold ph-download-simple"></i> Export CSV</button>
+                </div>
+                
+                <div class="dash-grid" style="margin-bottom: 2rem;">
+                    <div class="dash-card">
+                        <p style="color: var(--text-muted); margin: 0 0 0.5rem 0;">Monthly Revenue</p>
+                        <h2 style="font-size: 2rem; margin: 0; color: #059669;">$45,250.00</h2>
+                    </div>
+                    <div class="dash-card">
+                        <p style="color: var(--text-muted); margin: 0 0 0.5rem 0;">Pending Invoices</p>
+                        <h2 style="font-size: 2rem; margin: 0; color: #D97706;">$1,840.00</h2>
+                    </div>
+                    <div class="dash-card">
+                        <p style="color: var(--text-muted); margin: 0 0 0.5rem 0;">Total Transactions</p>
+                        <h2 style="font-size: 2rem; margin: 0; color: var(--text-dark);">342</h2>
+                    </div>
+                    <div class="dash-card">
+                        <p style="color: var(--text-muted); margin: 0 0 0.5rem 0;">Avg. Transaction</p>
+                        <h2 style="font-size: 2rem; margin: 0; color: var(--primary-color);">$132.30</h2>
+                    </div>
+                </div>
+
+                <div class="dash-card" style="margin-bottom: 2rem;">
+                    <h3 style="font-size: 1.25rem; margin: 0 0 1.5rem 0; color: var(--text-dark);">Revenue Breakdown</h3>
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;">
+                        <div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem; font-size: 0.85rem;">
+                                <span>Consultations</span>
+                                <strong>45%</strong>
+                            </div>
+                            <div class="progress-bar-bg">
+                                <div class="progress-bar-fill" style="width: 45%; background: var(--primary-color);"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem; font-size: 0.85rem;">
+                                <span>Surgeries</span>
+                                <strong>30%</strong>
+                            </div>
+                            <div class="progress-bar-bg">
+                                <div class="progress-bar-fill" style="width: 30%; background: #EF4444;"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem; font-size: 0.85rem;">
+                                <span>Vaccinations</span>
+                                <strong>15%</strong>
+                            </div>
+                            <div class="progress-bar-bg">
+                                <div class="progress-bar-fill" style="width: 15%; background: #10B981;"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem; font-size: 0.85rem;">
+                                <span>Medications</span>
+                                <strong>10%</strong>
+                            </div>
+                            <div class="progress-bar-bg">
+                                <div class="progress-bar-fill" style="width: 10%; background: #F59E0B;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dash-table-wrapper" style="margin: 0 0 2rem 0;">
+                    <table class="dash-table">
+                            <thead>
+                                <tr>
+                                    <th>Invoice ID</th>
+                                    <th>Date</th>
+                                    <th>Client Name</th>
+                                    <th>Description</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#INV-889</td>
+                                    <td>Oct 24, 2026</td>
+                                    <td>John Doe</td>
+                                    <td>General Checkup</td>
+                                    <td style="font-weight: 600;">$125.00</td>
+                                    <td><span class="badge badge-success">Paid</span></td>
+                                </tr>
+                                <tr>
+                                    <td>#INV-890</td>
+                                    <td>Oct 24, 2026</td>
+                                    <td>Sarah Connor</td>
+                                    <td>Dental Procedure</td>
+                                    <td style="font-weight: 600;">$450.00</td>
+                                    <td><span class="badge badge-success">Paid</span></td>
+                                </tr>
+                                <tr>
+                                    <td>#INV-891</td>
+                                    <td>Oct 24, 2026</td>
+                                    <td>Michael B.</td>
+                                    <td>Allergy Testing</td>
+                                    <td style="font-weight: 600;">$210.00</td>
+                                    <td><span class="badge badge-warning">Pending</span></td>
+                                </tr>
+                                <tr>
+                                    <td>#INV-892</td>
+                                    <td>Oct 23, 2026</td>
+                                    <td>Emily R.</td>
+                                    <td>Wing Clipping</td>
+                                    <td style="font-weight: 600;">$45.00</td>
+                                    <td><span class="badge badge-success">Paid</span></td>
+                                </tr>
+                                <tr>
+                                    <td>#INV-893</td>
+                                    <td>Oct 23, 2026</td>
+                                    <td>David Clark</td>
+                                    <td>Vaccination Series</td>
+                                    <td style="font-weight: 600;">$180.00</td>
+                                    <td><span class="badge badge-success">Paid</span></td>
+                                </tr>
+                                <tr>
+                                    <td>#INV-894</td>
+                                    <td>Oct 22, 2026</td>
+                                    <td>Jessica M.</td>
+                                    <td>Prescription Refill</td>
+                                    <td style="font-weight: 600;">$65.00</td>
+                                    <td><span class="badge badge-success">Paid</span></td>
+                                </tr>
+                                <tr>
+                                    <td>#INV-895</td>
+                                    <td>Oct 22, 2026</td>
+                                    <td>Tom H.</td>
+                                    <td>X-Rays & Exam</td>
+                                    <td style="font-weight: 600;">$320.00</td>
+                                    <td><span class="badge badge-warning">Pending</span></td>
+                                </tr>
+                                <tr>
+                                    <td>#INV-896</td>
+                                    <td>Oct 21, 2026</td>
+                                    <td>Nancy W.</td>
+                                    <td>Spay Surgery</td>
+                                    <td style="font-weight: 600;">$550.00</td>
+                                    <td><span class="badge badge-success">Paid</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+            </section>
+
+            <!-- SECTION 4: PATIENTS & CLIENTS -->
+            <section id="patients" class="dash-section">
+                <div class="dash-section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h2 style="font-size: 1.8rem; margin: 0; color: var(--text-dark);">Client CRM</h2>
+                    <div style="display: flex; gap: 1rem;">
+                        <input type="text" class="auth-input" placeholder="Search client or pet..." style="padding: 0.5rem; width: 250px;">
+                        <button class="btn btn-primary" style="border-radius: 100px;" onclick="openModal('addClientModal')"><i class="ph-bold ph-plus"></i> Add Client</button>
+                    </div>
+                </div>
+
+                <div class="dash-table-wrapper">
+                    <table class="dash-table">
+                        <thead>
+                            <tr>
+                                <th>Client Details</th>
+                                <th>Contact Info</th>
+                                <th>Registered Pets</th>
+                                <th>Last Visit</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 1rem;">
+                                        <img src="https://i.pravatar.cc/150?img=1" style="width: 40px; height: 40px; border-radius: 50%;">
+                                        <strong style="color: var(--text-dark);">John Doe</strong>
+                                    </div>
+                                </td>
+                                <td>john.doe@example.com<br>+1 (555) 123-4567</td>
+                                <td>Buddy (Dog)</td>
+                                <td>Oct 24, 2026</td>
+                                <td><span class="badge badge-success">Active</span></td>
+                                <td><button class="btn btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">Profile</button></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 1rem;">
+                                        <img src="https://i.pravatar.cc/150?img=47" style="width: 40px; height: 40px; border-radius: 50%;">
+                                        <strong style="color: var(--text-dark);">Sarah Connor</strong>
+                                    </div>
+                                </td>
+                                <td>sarah.c@example.com<br>+1 (555) 987-6543</td>
+                                <td>Max (Dog), Bella (Cat)</td>
+                                <td>Oct 24, 2026</td>
+                                <td><span class="badge badge-success">Active</span></td>
+                                <td><button class="btn btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">Profile</button></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 1rem;">
+                                        <img src="https://i.pravatar.cc/150?img=12" style="width: 40px; height: 40px; border-radius: 50%;">
+                                        <strong style="color: var(--text-dark);">Michael B.</strong>
+                                    </div>
+                                </td>
+                                <td>michaelb@example.com<br>+1 (555) 456-7890</td>
+                                <td>Luna (Cat)</td>
+                                <td>Mar 05, 2026</td>
+                                <td><span class="badge badge-warning">Inactive</span></td>
+                                <td><button class="btn btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">Profile</button></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 1rem;">
+                                        <img src="https://i.pravatar.cc/150?img=5" style="width: 40px; height: 40px; border-radius: 50%;">
+                                        <strong style="color: var(--text-dark);">Emily R.</strong>
+                                    </div>
+                                </td>
+                                <td>emily.r@example.com<br>+1 (555) 234-5678</td>
+                                <td>Charlie (Bird)</td>
+                                <td>Oct 23, 2026</td>
+                                <td><span class="badge badge-success">Active</span></td>
+                                <td><button class="btn btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">Profile</button></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 1rem;">
+                                        <img src="https://i.pravatar.cc/150?img=8" style="width: 40px; height: 40px; border-radius: 50%;">
+                                        <strong style="color: var(--text-dark);">David Clark</strong>
+                                    </div>
+                                </td>
+                                <td>david.c@example.com<br>+1 (555) 345-6789</td>
+                                <td>Zoe (Dog)</td>
+                                <td>Oct 23, 2026</td>
+                                <td><span class="badge badge-success">Active</span></td>
+                                <td><button class="btn btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">Profile</button></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 1rem;">
+                                        <img src="https://i.pravatar.cc/150?img=9" style="width: 40px; height: 40px; border-radius: 50%;">
+                                        <strong style="color: var(--text-dark);">Jessica M.</strong>
+                                    </div>
+                                </td>
+                                <td>jessica.m@example.com<br>+1 (555) 456-1234</td>
+                                <td>Buster (Dog)</td>
+                                <td>Oct 22, 2026</td>
+                                <td><span class="badge badge-success">Active</span></td>
+                                <td><button class="btn btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">Profile</button></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 1rem;">
+                                        <img src="https://i.pravatar.cc/150?img=15" style="width: 40px; height: 40px; border-radius: 50%;">
+                                        <strong style="color: var(--text-dark);">Tom H.</strong>
+                                    </div>
+                                </td>
+                                <td>tom.h@example.com<br>+1 (555) 567-2345</td>
+                                <td>Simba (Cat)</td>
+                                <td>Oct 22, 2026</td>
+                                <td><span class="badge badge-success">Active</span></td>
+                                <td><button class="btn btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">Profile</button></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 1rem;">
+                                        <img src="https://i.pravatar.cc/150?img=20" style="width: 40px; height: 40px; border-radius: 50%;">
+                                        <strong style="color: var(--text-dark);">Nancy W.</strong>
+                                    </div>
+                                </td>
+                                <td>nancy.w@example.com<br>+1 (555) 678-3456</td>
+                                <td>Daisy (Dog)</td>
+                                <td>Oct 21, 2026</td>
+                                <td><span class="badge badge-success">Active</span></td>
+                                <td><button class="btn btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">Profile</button></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 1rem;">
+                                        <img src="https://i.pravatar.cc/150?img=33" style="width: 40px; height: 40px; border-radius: 50%;">
+                                        <strong style="color: var(--text-dark);">George K.</strong>
+                                    </div>
+                                </td>
+                                <td>george.k@example.com<br>+1 (555) 789-4567</td>
+                                <td>Oscar (Rabbit)</td>
+                                <td>Jan 14, 2026</td>
+                                <td><span class="badge badge-warning">Inactive</span></td>
+                                <td><button class="btn btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">Profile</button></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 1rem;">
+                                        <img src="https://i.pravatar.cc/150?img=41" style="width: 40px; height: 40px; border-radius: 50%;">
+                                        <strong style="color: var(--text-dark);">Laura J.</strong>
+                                    </div>
+                                </td>
+                                <td>laura.j@example.com<br>+1 (555) 890-5678</td>
+                                <td>Lucy (Cat)</td>
+                                <td>Oct 10, 2026</td>
+                                <td><span class="badge badge-success">Active</span></td>
+                                <td><button class="btn btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">Profile</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- SECTION 5: CONTENT MANAGER -->
+            <section id="content" class="dash-section">
+                <h2 style="font-size: 1.8rem; margin: 0 0 2rem 0; color: var(--text-dark);">Website Content Manager</h2>
+                
+                <div class="dash-grid">
+                    <!-- Home Page Editor -->
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h3 class="dash-card-title">Home Page Settings</h3>
+                            <i class="ph-fill ph-house" style="font-size: 1.5rem; color: var(--primary-color);"></i>
+                        </div>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Edit hero text, update the main banner image, and manage the highlighted services.</p>
+                        <button class="btn btn-primary" style="width: 100%; border-radius: 100px;">Launch Editor</button>
+                    </div>
+                    
+                    <!-- Blog Posts -->
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h3 class="dash-card-title">Blog Articles</h3>
+                            <i class="ph-fill ph-article" style="font-size: 1.5rem; color: #10B981;"></i>
+                        </div>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Write new pet care tips, edit existing blog posts, and manage article categories.</p>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button class="btn btn-primary" style="flex: 1; border-radius: 100px;">New Post</button>
+                            <button class="btn btn-outline" style="flex: 1; border-radius: 100px;">Manage All</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Team Management -->
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h3 class="dash-card-title">Staff Directory</h3>
+                            <i class="ph-fill ph-users-three" style="font-size: 1.5rem; color: #F59E0B;"></i>
+                        </div>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Add new veterinarians, update bios, and manage staff profile pictures.</p>
+                        <button class="btn btn-outline" style="width: 100%; border-radius: 100px;">Edit Directory</button>
+                    </div>
+                    
+                    <!-- Services Management -->
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h3 class="dash-card-title">Services & Pricing</h3>
+                            <i class="ph-fill ph-tag" style="font-size: 1.5rem; color: #EF4444;"></i>
+                        </div>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Add or remove clinic services, update descriptions, and manage pricing.</p>
+                        <button class="btn btn-outline" style="width: 100%; border-radius: 100px;">Manage Services</button>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;">
+                    <div class="dash-card">
+                        <h3 style="font-size: 1.25rem; margin: 0 0 1rem 0; color: var(--text-dark);">Global Site Details</h3>
+                        <form class="auth-form">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+                                <div class="auth-input-group" style="margin: 0;">
+                                    <label>Clinic Phone Number</label>
+                                    <input type="text" class="auth-input" value="+1 (555) 123-4567">
+                                </div>
+                                <div class="auth-input-group" style="margin: 0;">
+                                    <label>Emergency Contact</label>
+                                    <input type="text" class="auth-input" value="+1 (555) 999-9999">
+                                </div>
+                            </div>
+                            <div class="auth-input-group">
+                                <label>Footer Address Text</label>
+                                <input type="text" class="auth-input" value="123 Pet Avenue, New York, NY 10001">
+                            </div>
+                            <button type="button" class="btn btn-primary">Save Details</button>
+                        </form>
+                    </div>
+                    <div class="dash-card">
+                        <h3 style="font-size: 1.25rem; margin: 0 0 1rem 0; color: var(--text-dark);">Social Media Links</h3>
+                        <form class="auth-form">
+                            <div class="auth-input-group">
+                                <label>Facebook URL</label>
+                                <input type="text" class="auth-input" value="https://facebook.com/pawprints">
+                            </div>
+                            <div class="auth-input-group">
+                                <label>Instagram URL</label>
+                                <input type="text" class="auth-input" value="https://instagram.com/pawprints_vet">
+                            </div>
+                            <div class="auth-input-group">
+                                <label>Twitter URL</label>
+                                <input type="text" class="auth-input" value="https://twitter.com/pawprintsvet">
+                            </div>
+                            <button type="button" class="btn btn-primary">Update Links</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- SECTION 6: SETTINGS -->
+            <section id="settings" class="dash-section">
+                <h2 style="font-size: 1.8rem; margin: 0 0 2rem 0; color: var(--text-dark);">System Settings</h2>
+                
+                <div style="display: flex; flex-direction: column; gap: 2rem;">
+                    <div>
+                        <div class="dash-card" style="margin-bottom: 0;">
+                            <h3 style="font-size: 1.25rem; margin: 0 0 1.5rem 0; color: var(--text-dark); border-bottom: 1px solid var(--border-color); padding-bottom: 1rem;">Clinic Profile</h3>
+                            <form class="auth-form">
+                                <div class="auth-input-group">
+                                    <label>Clinic Name</label>
+                                    <input type="text" class="auth-input" value="PawPrints Veterinary Clinic">
+                                </div>
+                                <div class="auth-input-group">
+                                    <label>Tax ID / EIN</label>
+                                    <input type="text" class="auth-input" value="XX-XXXXXXX">
+                                </div>
+                                <div class="auth-input-group">
+                                    <label>Timezone</label>
+                                    <select class="auth-input">
+                                        <option>Eastern Time (ET)</option>
+                                        <option>Central Time (CT)</option>
+                                        <option>Pacific Time (PT)</option>
+                                    </select>
+                                </div>
+                                <button type="button" class="btn btn-primary" style="width: 100%;">Save Profile</button>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="dash-card">
+                            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; margin-bottom: 1.5rem;">
+                                <h3 style="font-size: 1.25rem; margin: 0; color: var(--text-dark);">User Management</h3>
+                                <button class="btn btn-outline" style="padding: 0.25rem 0.75rem; font-size: 0.8rem;"><i class="ph-bold ph-plus"></i> Add User</button>
+                            </div>
+                            <div class="dash-table-wrapper" style="margin: 0;">
+                                <table class="dash-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Role</th>
+                                            <th>Last Login</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong style="color: var(--text-dark);">Admin User</strong><br><span style="font-size: 0.85rem; color: var(--text-muted);">admin@pawprints.com</span></td>
+                                            <td><span class="badge badge-primary">Super Admin</span></td>
+                                            <td>Today, 08:45 AM</td>
+                                            <td><i class="ph-bold ph-pencil-simple" style="cursor: pointer; color: var(--text-muted);"></i></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong style="color: var(--text-dark);">Dr. Sarah Smith</strong><br><span style="font-size: 0.85rem; color: var(--text-muted);">dr.smith@pawprints.com</span></td>
+                                            <td><span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #059669;">Veterinarian</span></td>
+                                            <td>Today, 09:15 AM</td>
+                                            <td><i class="ph-bold ph-pencil-simple" style="cursor: pointer; color: var(--text-muted);"></i></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong style="color: var(--text-dark);">Jane Receptionist</strong><br><span style="font-size: 0.85rem; color: var(--text-muted);">desk@pawprints.com</span></td>
+                                            <td><span class="badge badge-warning">Staff</span></td>
+                                            <td>Yesterday, 04:30 PM</td>
+                                            <td><i class="ph-bold ph-pencil-simple" style="cursor: pointer; color: var(--text-muted);"></i></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Booking Modal -->
+    <div class="modal-overlay" id="bookingModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">Manual Booking</h3>
+                <button class="modal-close" onclick="closeModal('bookingModal')"><i class="ph-bold ph-x"></i></button>
+            </div>
+            <form class="auth-form">
+                <div class="auth-input-group">
+                    <label>Client Name</label>
+                    <input type="text" id="bookingClient" class="auth-input" placeholder="Search or enter client name">
+                </div>
+                <div class="auth-input-group">
+                    <label>Pet Name</label>
+                    <input type="text" id="bookingPet" class="auth-input" placeholder="Enter pet name">
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                    <div class="auth-input-group" style="margin: 0;">
+                        <label>Date</label>
+                        <input type="date" id="bookingDate" class="auth-input">
+                    </div>
+                    <div class="auth-input-group" style="margin: 0;">
+                        <label>Time</label>
+                        <input type="time" id="bookingTime" class="auth-input">
+                    </div>
+                </div>
+                <div class="auth-input-group" style="margin-top: 1.5rem;">
+                    <label>Assigned Doctor</label>
+                    <select id="bookingDoctor" class="auth-input">
+                        <option>Dr. Smith</option>
+                        <option>Dr. Lee</option>
+                        <option>Dr. Wilson</option>
+                    </select>
+                </div>
+                <div class="auth-input-group">
+                    <label>Reason for Visit</label>
+                    <textarea id="bookingReason" class="auth-input" rows="3" placeholder="Briefly describe the reason for visit"></textarea>
+                </div>
+                <button type="button" class="btn btn-primary" style="width: 100%; margin-top: 1rem;" onclick="closeModal('bookingModal')">Confirm Booking</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Client Modal -->
+    <div class="modal-overlay" id="addClientModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">Add New Client</h3>
+                <button class="modal-close" onclick="closeModal('addClientModal')"><i class="ph-bold ph-x"></i></button>
+            </div>
+            <form class="auth-form">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                    <div class="auth-input-group" style="margin: 0;">
+                        <label>First Name</label>
+                        <input type="text" class="auth-input" placeholder="First Name">
+                    </div>
+                    <div class="auth-input-group" style="margin: 0;">
+                        <label>Last Name</label>
+                        <input type="text" class="auth-input" placeholder="Last Name">
+                    </div>
+                </div>
+                <div class="auth-input-group" style="margin-top: 1.5rem;">
+                    <label>Email Address</label>
+                    <input type="email" class="auth-input" placeholder="client@example.com">
+                </div>
+                <div class="auth-input-group">
+                    <label>Phone Number</label>
+                    <input type="tel" class="auth-input" placeholder="(555) 000-0000">
+                </div>
+                <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 1.5rem 0;">
+                <h4 style="margin: 0 0 1rem 0; color: var(--text-dark);">Primary Pet Details</h4>
+                <div class="auth-input-group">
+                    <label>Pet Name</label>
+                    <input type="text" class="auth-input" placeholder="Enter pet name">
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                    <div class="auth-input-group" style="margin: 0;">
+                        <label>Species</label>
+                        <select class="auth-input">
+                            <option>Dog</option>
+                            <option>Cat</option>
+                            <option>Bird</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="auth-input-group" style="margin: 0;">
+                        <label>Breed</label>
+                        <input type="text" class="auth-input" placeholder="e.g. Golden Retriever">
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary" style="width: 100%; margin-top: 1.5rem;" onclick="closeModal('addClientModal')">Save Client & Pet</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Edit Booking prepopulation logic
+        function editBooking(client, pet, date, time, doctor, reason) {
+            // clear form before opening
+            document.getElementById('bookingClient').value = client || '';
+            document.getElementById('bookingPet').value = pet || '';
+            document.getElementById('bookingDate').value = date || '';
+            document.getElementById('bookingTime').value = time || '';
+            document.getElementById('bookingDoctor').value = doctor || 'Dr. Smith';
+            document.getElementById('bookingReason').value = reason || '';
+            
+            // open the modal
+            openModal('bookingModal');
+        }
+
+        // Modal Logic
+        function openModal(id) {
+            document.getElementById(id).classList.add('active');
+        }
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+        // Close modal if clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal-overlay')) {
+                event.target.classList.remove('active');
+            }
+        }
+
+        // Dark Mode Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        themeToggle.addEventListener('click', () => {
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                themeToggle.innerHTML = '<i class="ph-fill ph-moon"></i>';
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                themeToggle.innerHTML = '<i class="ph-fill ph-sun"></i>';
+            }
+        });
+
+        // RTL Toggle Logic (Mirror Effect)
+        const rtlToggle = document.getElementById('rtl-toggle');
+        rtlToggle.addEventListener('click', () => {
+            const currentDir = document.documentElement.getAttribute('dir') || 'ltr';
+            if (currentDir === 'ltr') {
+                document.documentElement.setAttribute('dir', 'rtl');
+            } else {
+                document.documentElement.setAttribute('dir', 'ltr');
+            }
+        });
+
+        // Tab Switching Logic
+        const links = document.querySelectorAll('.sidebar-link[data-target]');
+        const sections = document.querySelectorAll('.dash-section');
+        const headerSubtitle = document.getElementById('header-subtitle');
+        const headerTitle = document.querySelector('.dashboard-header h1');
+        
+        const sectionTitles = {
+            'overview': "System Overview",
+            'appointments': "Schedule Management",
+            'payments': "Financial Center",
+            'patients': "Client Directory",
+            'content': "Website Manager",
+            'settings': "System Settings"
+        };
+        
+        const subtitles = {
+            'overview': "Here is what's happening at the clinic today.",
+            'appointments': "Manage doctor schedules and patient visits.",
+            'payments': "Track revenue, pending invoices, and payments.",
+            'patients': "View and manage registered clients and their pets.",
+            'content': "Edit website pages, blog posts, and staff profiles.",
+            'settings': "Configure system preferences and admin access."
+        };
+
+        links.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Remove active from all links and sections
+                links.forEach(l => l.classList.remove('active'));
+                sections.forEach(s => s.classList.remove('active'));
+                
+                // Add active to clicked link and target section
+                link.classList.add('active');
+                const targetId = link.getAttribute('data-target');
+                document.getElementById(targetId).classList.add('active');
+                
+                // Force scroll to top when switching pages
+                window.scrollTo(0, 0);
+                const mainScroll = document.querySelector('.dashboard-main');
+                if (mainScroll) mainScroll.scrollTop = 0;
+
+                
+                // Update title and subtitle
+                if(sectionTitles[targetId]) {
+                    headerTitle.innerText = sectionTitles[targetId];
+                }
+                if(subtitles[targetId]) {
+                    headerSubtitle.innerText = subtitles[targetId];
+                }
+            });
+        });
+    </script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/mobile-nav.js"></script>
+</body>
+</html>

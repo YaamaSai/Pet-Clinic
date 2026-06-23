@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PawPrints Veterinary - Future</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+</head>
+
+<body class="home-page-2-extreme">
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-inner">
+            <a href="index.html" class="logo">
+                <i class="ph-fill ph-paw-print logo-icon"></i>
+                <div class="logo-text">
+                    <span class="logo-title">PawPrints</span>
+                    <span class="logo-subtitle">Veterinary</span>
+                </div>
+            </a>
+
+            <nav class="nav-links">
+                <div class="mobile-menu-header">
+                    <a href="index.html" class="logo">
+                        <i class="ph-fill ph-paw-print logo-icon"></i>
+                        <div class="logo-text">
+                            <span class="logo-title">PawPrints</span>
+                            <span class="logo-subtitle">Veterinary</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="nav-dropdown">
+                    <a href="index.html" class="dropdown-trigger active"><i class="ph-bold ph-house mobile-nav-icon"></i> Home <i class="ph ph-caret-down dropdown-arrow"></i></a>
+                    <div class="dropdown-menu">
+                        <a href="index.html">Home 1 - Animated Cards</a>
+                        <a href="index-2.html" class="active">Home 2 - Split Glassmorphism</a>
+                    </div>
+                </div>
+                <a href="about.html"><i class="ph-bold ph-user mobile-nav-icon"></i> About</a>
+                <a href="services.html"><i class="ph-bold ph-stethoscope mobile-nav-icon"></i> Services</a>
+                <a href="blog.html"><i class="ph-bold ph-article mobile-nav-icon"></i> Blog</a>
+                <a href="contact.html"><i class="ph-bold ph-phone mobile-nav-icon"></i> Contact</a>
+                <div class="nav-dropdown">
+                    <a href="#" class="dropdown-trigger"><i class="ph-bold ph-squares-four mobile-nav-icon"></i> Dashboards <i class="ph ph-caret-down dropdown-arrow"></i></a>
+                    <div class="dropdown-menu">
+                        <a href="client-dashboard.html">Client Portal</a>
+                        <a href="admin-dashboard.html">Admin Panel</a>
+                    </div>
+                </div>
+                <div class="mobile-login-container">
+                    <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; justify-content: center;">
+                        <button class="top-toggle-btn rtl-toggle-btn" aria-label="Toggle RTL" style="border: 1px solid rgba(255,255,255,0.2); color: white; height: 45px; padding: 0 1.5rem; border-radius: 100px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); font-size: 0.95rem; font-weight: 700; letter-spacing: 0.5px; cursor: pointer;">
+                            RTL
+                        </button>
+                        <button class="top-toggle-btn theme-toggle-btn" aria-label="Toggle Theme" style="border: 1px solid rgba(255,255,255,0.2); color: white; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); font-size: 1.2rem; cursor: pointer;">
+                            <i class="ph-bold ph-moon"></i>
+                        </button>
+                    </div>
+                    <a href="login.html" class="mobile-login-btn" style="display: flex; align-items: center; gap: 0.5rem;">Login <i class="ph-bold ph-sign-in"></i></a>
+                </div>
+            </nav>
+
+            <div class="header-actions" style="display: flex; align-items: center; gap: 1rem;">
+                <div style="display: flex; align-items: center; background: rgba(140, 108, 201, 0.08); border-radius: 100px; padding: 0.25rem; border: 1px solid rgba(140, 108, 201, 0.15);">
+                    <button id="theme-toggle" class="top-toggle-btn" aria-label="Toggle Dark Mode" style="background: transparent; border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--primary-color); transition: all 0.3s ease;">
+                        <i class="ph-bold ph-moon" style="font-size: 1.1rem;"></i>
+                    </button>
+                    <div style="width: 1px; height: 20px; background: rgba(140, 108, 201, 0.2); margin: 0 0.25rem;"></div>
+                    <button id="rtl-toggle" class="top-toggle-btn" aria-label="Toggle RTL" style="background: transparent; border: none; height: 36px; padding: 0 0.75rem; border-radius: 100px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--primary-color); font-size: 0.85rem; font-weight: 800; letter-spacing: 0.5px; transition: all 0.3s ease;">
+                        RTL
+                    </button>
+                </div>
+                <a href="login.html" class="btn btn-primary" style="box-shadow: 0 8px 16px rgba(140, 108, 201, 0.25); border-radius: 100px; padding: 0.6rem 1.5rem; font-weight: bold;">Login <i class="ph-bold ph-sign-in"></i></a>
+            </div>
+        
+            <button class="mobile-menu-toggle" aria-label="Open menu"><i class="ph-bold ph-list"></i></button>
+        </div>
+    </header>
+
+    <!-- SECTION 1: Extreme Animated Mesh Hero -->
+    <section class="mesh-hero">
+        <div class="mesh-bg">
+            <div class="mesh-blob mesh-blob-1"></div>
+            <div class="mesh-blob mesh-blob-2"></div>
+            <div class="mesh-blob mesh-blob-3"></div>
+        </div>
+        
+        <div class="hero-content-extreme hero-desktop">
+            <div class="glass-panel-extreme">
+                <div>
+                    <div class="hero-tag" style="margin-bottom: 1.5rem; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white;"><i class="ph-fill ph-rocket-launch"></i> Next-Gen Pet Care</div>
+                    <h1 style="font-size: 3.1rem; line-height: 1.15; margin-bottom: 1.25rem; color: white; font-weight: 900;">The Future of Veterinary Medicine.</h1>
+                    <p style="font-size: 1.15rem; color: rgba(255,255,255,0.8); margin-bottom: 2rem;">Experience unparalleled medical technology and compassionate care merged into one stunning, state-of-the-art facility.</p>
+                    
+                    <div style="display: flex; gap: 1rem;">
+                        <a href="contact.html" class="btn btn-primary" style="padding: 1.25rem 2.5rem; font-size: 1.1rem; background: white; color: var(--primary-color);">Book Appointment</a>
+                        <a href="services.html" class="btn btn-white" style="padding: 1.25rem 2.5rem; font-size: 1.1rem; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.3);">Explore Tech</a>
+                    </div>
+                </div>
+                
+                <div style="position: relative; height: 100%; min-height: 300px; border-radius: 1.5rem; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.3);">
+                    <!-- Hero Video or Image inside glass -->
+                    <img src="https://images.unsplash.com/photo-1576201836106-db1758fd1c97?auto=format&fit=crop&w=1000&q=80" alt="Modern Clinic" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div style="position: absolute; bottom: 1.5rem; left: 1.5rem; background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05)); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); padding: 0.75rem 1.5rem 0.75rem 0.75rem; border-radius: 100px; border: 1px solid rgba(255,255,255,0.4); border-top: 1px solid rgba(255,255,255,0.8); border-left: 1px solid rgba(255,255,255,0.8); box-shadow: 0 10px 30px rgba(0,0,0,0.3); width: fit-content; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: default;">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div style="width: 45px; height: 45px; background: linear-gradient(135deg, #10B981, #047857); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: white; box-shadow: 0 0 15px rgba(16,185,129,0.5), inset 0 2px 4px rgba(255,255,255,0.4); border: 2px solid rgba(255,255,255,0.9);"><i class="ph-bold ph-shield-check"></i></div>
+                            <div>
+                                <h4 style="margin: 0; font-size: 1.15rem; color: white; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.3); letter-spacing: 0.5px;">AAHA Accredited</h4>
+                                <p style="margin: 0; font-size: 0.85rem; color: rgba(255,255,255,0.9); font-weight: 500; text-shadow: 0 1px 2px rgba(0,0,0,0.3);">Top 12% of hospitals</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mobile Hero (Visible only on mobile via CSS) -->
+    <div class="hero-mobile" style="margin-top: -80px;">
+        <!-- Top Image Area -->
+        <div class="mh-image-area">
+            <img src="https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=600&q=80" alt="Happy Golden Retriever Puppy" class="mh-main-img">
+            
+            <div class="mh-badge-top">
+                <i class="ph-fill ph-paw-print"></i> Next-Gen Pet Care
+            </div>
+            
+            <div class="mh-badge-bottom">
+                <div class="mh-icon-green"><i class="ph-fill ph-shield-check"></i></div>
+                <div>
+                    <strong>AAHA Accredited</strong>
+                    <span>Top 12% of hospitals</span>
+                </div>
+            </div>
+            
+            <svg class="mh-deco" viewBox="0 0 100 100"><path d="M10,90 Q40,40 90,90" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+
+        <!-- Content Area -->
+        <div class="mh-content-area">
+            <h1>The <span>Future</span> of<br>Veterinary Medicine.</h1>
+            <p>Experience unparalleled medical technology and compassionate care merged into one stunning, state-of-the-art facility.</p>
+            
+            <div class="mh-buttons">
+                <a href="contact.html" class="btn-mh-primary">
+                    Book Appointment <div class="btn-icon"><i class="ph-bold ph-arrow-right"></i></div>
+                </a>
+                <a href="services.html" class="btn-mh-secondary">
+                    Explore Tech <i class="ph-bold ph-arrow-right"></i>
+                </a>
+            </div>
+            
+            <!-- Bottom Cards -->
+            <div class="mh-cards-grid">
+                <div class="mh-card">
+                    <div class="mh-card-icon" style="background: rgba(140, 108, 201, 0.2); color: #A88DEB;">
+                        <i class="ph-bold ph-heart"></i>
+                    </div>
+                    <h3>Compassionate<br>Care</h3>
+                    <p>Pets come first, always.</p>
+                </div>
+                <div class="mh-card">
+                    <div class="mh-card-icon" style="background: rgba(59, 130, 246, 0.2); color: #60A5FA;">
+                        <i class="ph-bold ph-cpu"></i>
+                    </div>
+                    <h3>Advanced<br>Technology</h3>
+                    <p>Cutting-edge tools for better outcomes.</p>
+                </div>
+                <div class="mh-card">
+                    <div class="mh-card-icon" style="background: rgba(236, 72, 153, 0.2); color: #F472B6;">
+                        <i class="ph-bold ph-users"></i>
+                    </div>
+                    <h3>Expert<br>Team</h3>
+                    <p>Highly skilled vets you can trust.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 2: Massive Bento Box Grid -->
+    <section class="bento-section">
+        <div class="container text-center" style="margin-bottom: 3rem;">
+            <h2 style="font-size: 2.5rem; color: var(--text-dark); margin-bottom: 1rem;">Everything Your Pet Needs. <span style="color: var(--primary-color);">In One Place.</span></h2>
+            <p style="font-size: 1.1rem; color: var(--text-light); max-width: 600px; margin: 0 auto;">Our facility integrates diagnostic, surgical, and wellness services into a seamless bento-style ecosystem.</p>
+        </div>
+        
+        <div class="bento-grid">
+            <!-- Large Hero Bento -->
+            <a href="services.html" class="bento-item bento-large">
+                <img src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=800&q=80" alt="Surgery" class="bento-bg">
+                <div class="bento-overlay"></div>
+                <div class="bento-content">
+                    <div class="bento-icon"><i class="ph-fill ph-scissors"></i></div>
+                    <h3 style="font-size: 2rem; margin-bottom: 0.5rem; color: white;">Advanced Surgery</h3>
+                    <p style="font-size: 1.05rem; color: rgba(255,255,255,0.8);">State-of-the-art surgical suites equipped with real-time vitals monitoring and laser technology.</p>
+                </div>
+            </a>
+            
+            <!-- Wide Bento -->
+            <a href="services.html" class="bento-item bento-wide">
+                <img src="https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=800&q=80" alt="Dentistry" class="bento-bg" onerror="this.src='https://images.unsplash.com/photo-1544568100-847a948585b9?auto=format&fit=crop&w=800&q=80'">
+                <div class="bento-overlay"></div>
+                <div class="bento-content">
+                    <div class="bento-icon" style="width: 50px; height: 50px; font-size: 1.5rem;"><i class="ph-fill ph-tooth"></i></div>
+                    <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: white;">Veterinary Dentistry</h3>
+                    <p style="color: rgba(255,255,255,0.8);">Digital X-rays and ultrasonic scaling for perfect oral health.</p>
+                </div>
+            </a>
+            
+            <!-- Standard Square Bento -->
+            <a href="services.html" class="bento-item">
+                <img src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=600&q=80" alt="Wellness" class="bento-bg">
+                <div class="bento-overlay"></div>
+                <div class="bento-content">
+                    <div class="bento-icon" style="width: 50px; height: 50px; font-size: 1.5rem;"><i class="ph-fill ph-heartbeat"></i></div>
+                    <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem; color: white;">Wellness Exams</h3>
+                </div>
+            </a>
+            
+            <!-- Standard Square Bento -->
+            <a href="services.html" class="bento-item">
+                <img src="https://images.unsplash.com/photo-1606425271394-c3ca9aa1fc06?auto=format&fit=crop&w=600&q=80" alt="Pharmacy" class="bento-bg">
+                <div class="bento-overlay"></div>
+                <div class="bento-content">
+                    <div class="bento-icon" style="width: 50px; height: 50px; font-size: 1.5rem;"><i class="ph-fill ph-pill"></i></div>
+                    <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem; color: white;">In-House Pharmacy</h3>
+                </div>
+            </a>
+            
+            <!-- Wide Bento Bottom Left -->
+            <a href="services.html" class="bento-item bento-wide">
+                <img src="https://images.unsplash.com/photo-1516222338250-863216ce01ea?auto=format&fit=crop&w=800&q=80" alt="Diagnostics" class="bento-bg" onerror="this.src='https://images.unsplash.com/photo-1544568100-847a948585b9?auto=format&fit=crop&w=800&q=80'">
+                <div class="bento-overlay"></div>
+                <div class="bento-content">
+                    <div class="bento-icon" style="width: 50px; height: 50px; font-size: 1.5rem;"><i class="ph-fill ph-microscope"></i></div>
+                    <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: white;">Digital Diagnostics</h3>
+                    <p style="color: rgba(255,255,255,0.8);">Ultrasound, CT scans, and complete blood panels with results in minutes.</p>
+                </div>
+            </a>
+            
+            <!-- Wide Bento Bottom Right -->
+            <a href="services.html" class="bento-item bento-wide">
+                <img src="https://images.unsplash.com/photo-1535930891776-0c2dfb7fda1a?auto=format&fit=crop&w=800&q=80" alt="Emergency" class="bento-bg" onerror="this.src='https://images.unsplash.com/photo-1544568100-847a948585b9?auto=format&fit=crop&w=800&q=80'">
+                <div class="bento-overlay"></div>
+                <div class="bento-content">
+                    <div class="bento-icon" style="width: 50px; height: 50px; font-size: 1.5rem;"><i class="ph-fill ph-ambulance"></i></div>
+                    <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: white;">24/7 Emergency Care</h3>
+                    <p style="color: rgba(255,255,255,0.8);">Always open, fully staffed ICU for critical care when you need it most.</p>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- SECTION 3: Parallax Break -->
+    <section style="position: relative; padding: 8rem 0; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #000;">
+        <img src="https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=1920&q=80" alt="Dogs running" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 35%; opacity: 0.4; filter: grayscale(100%); transition: filter 1s ease;">
+        <div style="position: relative; z-index: 10; text-align: center; color: white; max-width: 800px; padding: 0 2rem;">
+            <h2 style="font-size: 3rem; font-weight: 900; line-height: 1.1; margin-bottom: 1rem; color: white;">Don't Wait for Emergencies.</h2>
+            <p style="font-size: 1.25rem; color: rgba(255,255,255,0.8); margin-bottom: 2.5rem;">Proactive healthcare drastically increases your pet's lifespan. Book a preventative scan today.</p>
+            <a href="contact.html" class="btn btn-primary" style="padding: 1.25rem 2.5rem; font-size: 1.1rem; font-weight: 800; border-radius: 100px; box-shadow: 0 20px 40px rgba(140, 108, 201, 0.4);">Schedule Scan <i class="ph-bold ph-arrow-right"></i></a>
+        </div>
+    </section>
+
+    <!-- SECTION 4: Interactive Specialists Grid -->
+    <section style="padding: 6rem 0; background: var(--white);">
+        <div class="container">
+            <div style="display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 4rem;">
+                <div style="display: inline-flex; align-items: center; gap: 0.75rem; background: #0F172A; padding: 0.6rem 1.5rem; border-radius: 100px; font-weight: 700; font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; position: relative; margin-bottom: 1.5rem; transition: transform 0.3s ease; cursor: default;">
+                    <div style="position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px; background: linear-gradient(90deg, #3B82F6, #8C6CC9, #EC4899); border-radius: 100px; z-index: -1; filter: blur(6px); opacity: 0.8; animation: pulseGlow 3s infinite alternate;"></div>
+                    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #0F172A; border-radius: 100px; z-index: -1; border: 1px solid rgba(255,255,255,0.1);"></div>
+                    <i class="ph-fill ph-sparkle" style="color: #A88DEB; font-size: 1.1rem; z-index: 1;"></i>
+                    <span style="background: linear-gradient(to right, #FFFFFF, #CBD5E1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; z-index: 1;">World-Class Team</span>
+                    <i class="ph-fill ph-sparkle" style="color: #A88DEB; font-size: 1.1rem; z-index: 1;"></i>
+                </div>
+                <h2 style="color: var(--text-dark); margin-bottom: 1rem; font-size: 3rem; font-weight: 900; line-height: 1.1;">Meet Our Specialists</h2>
+                <p style="font-size: 1.15rem; color: var(--text-light); max-width: 600px; margin-bottom: 0;">Our industry-leading veterinarians bring decades of combined experience across every major medical discipline.</p>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem;">
+                <div style="position: relative; border-radius: 1.5rem; overflow: hidden; background: #f3f4f6; aspect-ratio: 4/5; group">
+                    <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=600&q=80" alt="Dr. Sarah" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div style="position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); padding: 2rem 1.5rem 1.5rem 1.5rem; color: white;">
+                        <h3 style="margin-bottom: 0.25rem; font-size: 1.4rem; color: white;">Dr. Sarah Jenkins</h3>
+                        <p style="color: var(--primary-color); font-weight: bold; margin-bottom: 0; font-size: 0.9rem;">Chief Surgeon</p>
+                    </div>
+                </div>
+                
+                <div style="position: relative; border-radius: 1.5rem; overflow: hidden; background: #f3f4f6; aspect-ratio: 4/5; group">
+                    <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=600&q=80" alt="Dr. Michael" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div style="position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); padding: 2rem 1.5rem 1.5rem 1.5rem; color: white;">
+                        <h3 style="margin-bottom: 0.25rem; font-size: 1.4rem; color: white;">Dr. Michael Chen</h3>
+                        <p style="color: var(--primary-color); font-weight: bold; margin-bottom: 0; font-size: 0.9rem;">Feline Specialist</p>
+                    </div>
+                </div>
+                
+                <div style="position: relative; border-radius: 1.5rem; overflow: hidden; background: #f3f4f6; aspect-ratio: 4/5; group">
+                    <img src="https://images.unsplash.com/photo-1594824436951-7f12bc0094e8?auto=format&fit=crop&w=600&q=80" alt="Dr. Emily" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=600&q=80'">
+                    <div style="position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); padding: 2rem 1.5rem 1.5rem 1.5rem; color: white;">
+                        <h3 style="margin-bottom: 0.25rem; font-size: 1.4rem; color: white;">Dr. Emily Ross</h3>
+                        <p style="color: var(--primary-color); font-weight: bold; margin-bottom: 0; font-size: 0.9rem;">Diagnostic Imaging</p>
+                    </div>
+                </div>
+
+                <div style="position: relative; border-radius: 1.5rem; overflow: hidden; background: #f3f4f6; aspect-ratio: 4/5; group">
+                    <img src="https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=600&q=80" alt="Dr. James" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=600&q=80'">
+                    <div style="position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); padding: 2rem 1.5rem 1.5rem 1.5rem; color: white;">
+                        <h3 style="margin-bottom: 0.25rem; font-size: 1.4rem; color: white;">Dr. James Wilson</h3>
+                        <p style="color: var(--primary-color); font-weight: bold; margin-bottom: 0; font-size: 0.9rem;">Neurology Specialist</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: Modern Testimonials (Glass Cards) -->
+    <section style="padding: 6rem 0 12rem; background: var(--bg-color); border-top: 1px solid var(--border-color);">
+        <div class="container text-center">
+            <h2 style="font-size: 2.5rem; color: var(--text-dark); margin-bottom: 3rem;">Loved by Pet Parents</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr)); gap: 2rem;">
+                <!-- Testimonial 1 -->
+                <div class="glass-testimonial" style="text-align: left;">
+                    <i class="ph-fill ph-quotes" style="font-size: 3rem; color: var(--primary-color); opacity: 0.2; margin-bottom: 1rem;"></i>
+                    <p style="font-size: 1.25rem; color: var(--text-dark); font-weight: 500; line-height: 1.6; margin-bottom: 2rem;">"The bento-box approach to their digital health records is amazing. I can see my dog's x-rays right from my phone. Incredible modern facility."</p>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <img src="https://i.pravatar.cc/150?img=32" alt="Avatar" style="width: 60px; height: 60px; border-radius: 50%;">
+                        <div>
+                            <h4 style="margin: 0; color: var(--text-dark); font-size: 1.1rem;">Alex Rivera</h4>
+                            <div style="color: #F59E0B;"><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="glass-testimonial" style="text-align: left;">
+                    <i class="ph-fill ph-quotes" style="font-size: 3rem; color: var(--primary-color); opacity: 0.2; margin-bottom: 1rem;"></i>
+                    <p style="font-size: 1.25rem; color: var(--text-dark); font-weight: 500; line-height: 1.6; margin-bottom: 2rem;">"Dr. Chen performed laser surgery on my cat. The precision and recovery time were unbelievable compared to traditional methods."</p>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <img src="https://i.pravatar.cc/150?img=44" alt="Avatar" style="width: 60px; height: 60px; border-radius: 50%;">
+                        <div>
+                            <h4 style="margin: 0; color: var(--text-dark); font-size: 1.1rem;">Jessica T.</h4>
+                            <div style="color: #F59E0B;"><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 6: Floating Footer CTA & Main Footer -->
+    <footer class="site-footer">
+        <!-- Floating CTA -->
+        <div class="container">
+            <div class="floating-cta">
+                <div class="cta-content">
+                    <h2>Ready to give your pet the best care?</h2>
+                    <p>Schedule an appointment with our experienced team today and ensure your furry friend lives a
+                        long, healthy life.</p>
+                    <div class="cta-buttons">
+                        <a href="contact.html" class="btn btn-white"><i class="ph-fill ph-calendar-plus"></i> Book an
+                            Appointment</a>
+                        <a href="tel:+15551234567" class="btn btn-outline-white"><i class="ph-fill ph-phone-call"></i>
+                            (555) 123-4567</a>
+                    </div>
+                </div>
+                <div class="cta-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1544568100-847a948585b9?auto=format&fit=crop&w=400&q=80"
+                        alt="Happy dog in CTA">
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Links -->
+        <div class="container footer-main-content">
+            <div class="footer-grid">
+                <div class="footer-col footer-brand">
+                    <a href="index.html" class="logo" style="margin-bottom: var(--spacing-3);">
+                        <i class="ph-fill ph-paw-print logo-icon" style="color: var(--white);"></i>
+                        <div class="logo-text">
+                            <span class="logo-title" style="color: var(--white);">PawPrints</span>
+                            <span class="logo-subtitle" style="color: #A88DEB;">Veterinary</span>
+                        </div>
+                    </a>
+                    <p>Providing compassionate, advanced veterinary care for your furry family members in a
+                        state-of-the-art facility.</p>
+                    <div class="social-links">
+                        <a href="about.html"><i class="ph-fill ph-facebook-logo"></i></a>
+                        <a href="about.html"><i class="ph-fill ph-instagram-logo"></i></a>
+                        <a href="about.html"><i class="ph-fill ph-twitter-logo"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="services.html">Our Services</a></li>
+                        <li><a href="blog.html">Latest News</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="services.html">Wellness Exams</a></li>
+                        <li><a href="services.html">Pet Dentistry</a></li>
+                        <li><a href="services.html">Soft Tissue Surgery</a></li>
+                        <li><a href="contact.html">Emergency Care</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Get In Touch</h4>
+                    <ul class="contact-list">
+                        <li><i class="ph-fill ph-map-pin"></i> 123 Pet Lane, Cityville, ST 12345</li>
+                        <li><i class="ph-fill ph-phone"></i> (555) 123-4567</li>
+                        <li><i class="ph-fill ph-envelope"></i> hello@pawprints.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 PawPrints Veterinary. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <a href="about.html">Privacy Policy</a>
+                    <a href="about.html">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/mobile-nav.js"></script>
+</body>
+
+</html>

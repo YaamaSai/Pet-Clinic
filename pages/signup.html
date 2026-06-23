@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - PawPrints</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+</head>
+
+<body>
+
+    <!-- Hero Card wrapper triggers particle animation -->
+    <div class="hero-card"
+        style="border-radius: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 0;">
+
+        <div class="auth-wrapper">
+            <div class="auth-card">
+                <div class="auth-logo" style="position: relative;">
+                    <a href="index.html" class="logo" style="justify-content: center; text-decoration: none;">
+                        <i class="ph-fill ph-paw-print logo-icon"></i>
+                        <div class="logo-text" style="text-align: left;">
+                            <span class="logo-title">PawPrints</span>
+                            <span class="logo-subtitle" style="color: var(--primary-color);">Veterinary</span>
+                        </div>
+                    </a>
+                    
+                    <!-- Small Toggles Right Aligned -->
+                    <div class="auth-toggles-container" style="position: absolute; right: 0; top: 50%; transform: translateY(-50%); display: flex; align-items: center; background: rgba(140, 108, 201, 0.08); border-radius: 100px; padding: 0.25rem; border: 1px solid rgba(140, 108, 201, 0.15);">
+                        <button id="theme-toggle" class="top-toggle-btn" aria-label="Toggle Dark Mode" style="background: transparent; border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--primary-color); transition: all 0.3s ease;">
+                            <i class="ph-bold ph-moon" style="font-size: 1.1rem;"></i>
+                        </button>
+                        <div class="auth-toggles-divider" style="width: 1px; height: 20px; background: rgba(140, 108, 201, 0.2); margin: 0 0.25rem;"></div>
+                        <button id="rtl-toggle" class="top-toggle-btn" aria-label="Toggle RTL" style="background: transparent; border: none; height: 36px; padding: 0 0.75rem; border-radius: 100px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--primary-color); font-size: 0.85rem; font-weight: 800; letter-spacing: 0.5px; transition: all 0.3s ease;">
+                            RTL
+                        </button>
+                    </div>
+                </div>
+
+                <h2>Create an Account</h2>
+                <p>Join our community of pet lovers.</p>
+
+                <div class="social-btn-row">
+                    <button class="social-icon-btn"><i class="ph ph-google-logo icon-google"></i></button>
+                    <button class="social-icon-btn"><i class="ph ph-apple-logo icon-apple"></i></button>
+                    <button class="social-icon-btn"><i class="ph ph-facebook-logo icon-facebook"></i></button>
+                </div>
+
+                <div class="social-divider">
+                    <span>or sign up with email</span>
+                </div>
+
+                <form class="auth-form" action="index.html">
+                    <div class="auth-input-group">
+                        <label>Full Name</label>
+                        <input type="text" class="auth-input" placeholder="John Doe" required>
+                    </div>
+                    <div class="auth-input-group">
+                        <label>Email Address</label>
+                        <input type="email" class="auth-input" placeholder="hello@example.com" required>
+                    </div>
+                    <div class="auth-input-group">
+                        <label>Password</label>
+                        <div style="position: relative;">
+                            <input type="password" class="auth-input pwd-input" placeholder="........" required>
+                            <i class="ph ph-eye pwd-toggle" style="position: absolute; right: 1.25rem; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--text-light); font-size: 1.25rem; z-index: 10;"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="auth-input-group">
+                        <label>Confirm Password</label>
+                        <div style="position: relative;">
+                            <input type="password" class="auth-input pwd-input" placeholder="........" required>
+                            <i class="ph ph-eye pwd-toggle" style="position: absolute; right: 1.25rem; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--text-light); font-size: 1.25rem; z-index: 10;"></i>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary"
+                        style="width: 100%; margin-top: 1rem; font-size: 1.1rem;">Sign Up</button>
+                </form>
+
+                <div class="auth-footer">
+                    Already have an account? <a href="login.html" class="auth-link">Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/main.js"></script>
+    <script>
+        // Password Visibility Toggle
+        document.querySelectorAll('.pwd-toggle').forEach(icon => {
+            icon.addEventListener('click', function() {
+                const input = this.previousElementSibling;
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    this.classList.replace('ph-eye', 'ph-eye-slash');
+                } else {
+                    input.type = 'password';
+                    this.classList.replace('ph-eye-slash', 'ph-eye');
+                }
+            });
+        });
+    </script>
+    <script src="../assets/js/mobile-nav.js"></script>
+</body>
+
+</html>

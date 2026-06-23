@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PawPrints Veterinary Template - Overview</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        body {
+            background-color: var(--bg-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .preview-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            border-bottom: 5px solid #FCD34D;
+        }
+
+        .preview-header h1 {
+            color: white;
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .preview-header p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .preview-container {
+            max-width: 1200px;
+            margin: -3rem auto 3rem;
+            padding: 0 2rem;
+            width: 100%;
+            flex: 1;
+        }
+
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .preview-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .preview-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+            box-shadow: 0 20px 40px rgba(140, 108, 201, 0.15);
+        }
+
+        .preview-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(140, 108, 201, 0.1);
+            color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .preview-card h3 {
+            margin: 0;
+            font-size: 1.4rem;
+            color: var(--text-dark);
+        }
+
+        .preview-card p {
+            margin: 0;
+            color: var(--text-light);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            flex: 1;
+        }
+
+        .preview-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-color);
+            font-weight: 700;
+            text-decoration: none;
+            margin-top: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .preview-link i {
+            transition: transform 0.3s ease;
+        }
+
+        .preview-card:hover .preview-link i {
+            transform: translateX(5px);
+        }
+
+        .section-title {
+            grid-column: 1 / -1;
+            margin-top: 2rem;
+            margin-bottom: 0.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+            color: var(--text-dark);
+            font-size: 1.8rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="preview-header">
+        <h1><i class="ph-fill ph-paw-print"></i> PawPrints</h1>
+        <p>A beautifully crafted, fully responsive HTML template designed exclusively for veterinary clinics and pet care professionals.</p>
+    </header>
+
+    <main class="preview-container">
+        <div class="preview-grid">
+            
+            <h2 class="section-title">Main Pages</h2>
+
+            <a href="pages/index.html" class="preview-card" style="text-decoration: none;">
+                <div class="preview-icon"><i class="ph-fill ph-house"></i></div>
+                <h3>Home 1</h3>
+                <p>Modern homepage with animated cards and a clean hero section.</p>
+                <div class="preview-link">View Page <i class="ph-bold ph-arrow-right"></i></div>
+            </a>
+
+            <a href="pages/index-2.html" class="preview-card" style="text-decoration: none;">
+                <div class="preview-icon"><i class="ph-fill ph-sparkle"></i></div>
+                <h3>Home 2</h3>
+                <p>Extreme glassmorphism design with a bento-box services grid.</p>
+                <div class="preview-link">View Page <i class="ph-bold ph-arrow-right"></i></div>
+            </a>
+
+            <a href="pages/about.html" class="preview-card" style="text-decoration: none;">
+                <div class="preview-icon"><i class="ph-fill ph-users"></i></div>
+                <h3>About Us</h3>
+                <p>Clinic history, core values, facility gallery, and team members.</p>
+                <div class="preview-link">View Page <i class="ph-bold ph-arrow-right"></i></div>
+            </a>
+
+            <a href="pages/services.html" class="preview-card" style="text-decoration: none;">
+                <div class="preview-icon"><i class="ph-fill ph-stethoscope"></i></div>
+                <h3>Services</h3>
+                <p>Detailed medical services, pricing plans, and specialized care info.</p>
+                <div class="preview-link">View Page <i class="ph-bold ph-arrow-right"></i></div>
+            </a>
+
+            <a href="pages/blog.html" class="preview-card" style="text-decoration: none;">
+                <div class="preview-icon"><i class="ph-fill ph-article"></i></div>
+                <h3>Blog</h3>
+                <p>Pet care articles, news, and essential tips for pet owners.</p>
+                <div class="preview-link">View Page <i class="ph-bold ph-arrow-right"></i></div>
+            </a>
+
+            <a href="pages/contact.html" class="preview-card" style="text-decoration: none;">
+                <div class="preview-icon"><i class="ph-fill ph-phone"></i></div>
+                <h3>Contact</h3>
+                <p>Location details, hours, and an appointment booking form.</p>
+                <div class="preview-link">View Page <i class="ph-bold ph-arrow-right"></i></div>
+            </a>
+
+            <h2 class="section-title">Dashboards</h2>
+
+            <a href="pages/client-dashboard.html" class="preview-card" style="text-decoration: none;">
+                <div class="preview-icon"><i class="ph-fill ph-user-circle"></i></div>
+                <h3>Client Portal</h3>
+                <p>A beautiful dashboard for pet owners to manage appointments and records.</p>
+                <div class="preview-link">View Page <i class="ph-bold ph-arrow-right"></i></div>
+            </a>
+
+            <a href="pages/admin-dashboard.html" class="preview-card" style="text-decoration: none;">
+                <div class="preview-icon"><i class="ph-fill ph-lock-key"></i></div>
+                <h3>Admin Dashboard</h3>
+                <p>A complex management panel with charts, metrics, and staff schedules.</p>
+                <div class="preview-link">View Page <i class="ph-bold ph-arrow-right"></i></div>
+            </a>
+
+            <h2 class="section-title">Authentication & Utility</h2>
+
+            <a href="pages/login.html" class="preview-card" style="text-decoration: none;">
+                <div class="preview-icon"><i class="ph-fill ph-sign-in"></i></div>
+                <h3>Login</h3>
+                <p>Clean authentication screen with split-screen visual layout.</p>
+                <div class="preview-link">View Page <i class="ph-bold ph-arrow-right"></i></div>
+            </a>
+
+            <a href="pages/signup.html" class="preview-card" style="text-decoration: none;">
+                <div class="preview-icon"><i class="ph-fill ph-user-plus"></i></div>
+                <h3>Sign Up</h3>
+                <p>User registration page for new pet parents.</p>
+                <div class="preview-link">View Page <i class="ph-bold ph-arrow-right"></i></div>
+            </a>
+
+            <a href="pages/forgot-password.html" class="preview-card" style="text-decoration: none;">
+                <div class="preview-icon"><i class="ph-fill ph-key"></i></div>
+                <h3>Forgot Password</h3>
+                <p>Password recovery screen with clear instructions.</p>
+                <div class="preview-link">View Page <i class="ph-bold ph-arrow-right"></i></div>
+            </a>
+
+            <a href="pages/404.html" class="preview-card" style="text-decoration: none;">
+                <div class="preview-icon"><i class="ph-fill ph-warning"></i></div>
+                <h3>404 Error</h3>
+                <p>A fun and creative "page not found" screen featuring a confused dog.</p>
+                <div class="preview-link">View Page <i class="ph-bold ph-arrow-right"></i></div>
+            </a>
+
+            <a href="pages/coming-soon.html" class="preview-card" style="text-decoration: none;">
+                <div class="preview-icon"><i class="ph-fill ph-hourglass-high"></i></div>
+                <h3>Coming Soon</h3>
+                <p>A beautiful placeholder page with a countdown timer and email signup.</p>
+                <div class="preview-link">View Page <i class="ph-bold ph-arrow-right"></i></div>
+            </a>
+
+        </div>
+    </main>
+
+    <footer style="text-align: center; padding: 2rem; color: var(--text-light); margin-top: auto;">
+        <p>&copy; 2026 PawPrints Veterinary Template. Designed with care.</p>
+    </footer>
+
+    <!-- Use main.js to apply dark mode if default is set -->
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

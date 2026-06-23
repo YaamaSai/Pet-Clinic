@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | PawPrints Veterinary</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-inner">
+            <a href="index.html" class="logo">
+                <i class="ph-fill ph-paw-print logo-icon"></i>
+                <div class="logo-text">
+                    <span class="logo-title">PawPrints</span>
+                    <span class="logo-subtitle">Veterinary</span>
+                </div>
+            </a>
+
+            <nav class="nav-links">
+                <div class="mobile-menu-header">
+                    <a href="index.html" class="logo">
+                        <i class="ph-fill ph-paw-print logo-icon"></i>
+                        <div class="logo-text">
+                            <span class="logo-title">PawPrints</span>
+                            <span class="logo-subtitle">Veterinary</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="nav-dropdown">
+                    <a href="index.html" class="dropdown-trigger">Home <i class="ph ph-caret-down"></i></a>
+                    <div class="dropdown-menu">
+                        <a href="index.html">Home 1 - Animated Cards</a>
+                        <a href="index-2.html">Home 2 - Split Glassmorphism</a>
+                    </div>
+                </div>
+                <a href="about.html" class="active"><i class="ph-bold ph-user mobile-nav-icon"></i> About</a>
+                <a href="services.html"><i class="ph-bold ph-stethoscope mobile-nav-icon"></i> Services</a>
+                <a href="blog.html"><i class="ph-bold ph-article mobile-nav-icon"></i> Blog</a>
+                <a href="contact.html"><i class="ph-bold ph-phone mobile-nav-icon"></i> Contact</a>
+                <div class="nav-dropdown">
+                    <a href="#" class="dropdown-trigger"><i class="ph-bold ph-squares-four mobile-nav-icon"></i> Dashboards <i class="ph ph-caret-down dropdown-arrow"></i></a>
+                    <div class="dropdown-menu">
+                        <a href="client-dashboard.html">Client Portal</a>
+                        <a href="admin-dashboard.html">Admin Panel</a>
+                    </div>
+                </div>
+                <div class="mobile-login-container">
+                    <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; justify-content: center;">
+                        <button class="top-toggle-btn rtl-toggle-btn" aria-label="Toggle RTL" style="border: 1px solid rgba(255,255,255,0.2); color: white; height: 45px; padding: 0 1.5rem; border-radius: 100px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); font-size: 0.95rem; font-weight: 700; letter-spacing: 0.5px; cursor: pointer;">
+                            RTL
+                        </button>
+                        <button class="top-toggle-btn theme-toggle-btn" aria-label="Toggle Theme" style="border: 1px solid rgba(255,255,255,0.2); color: white; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); font-size: 1.2rem; cursor: pointer;">
+                            <i class="ph-bold ph-moon"></i>
+                        </button>
+                    </div>
+                    <a href="login.html" class="mobile-login-btn" style="display: flex; align-items: center; gap: 0.5rem;">Login <i class="ph-bold ph-sign-in"></i></a>
+                </div>
+            </nav>
+
+            <div class="header-actions" style="display: flex; align-items: center; gap: 1rem;">
+                <div style="display: flex; align-items: center; background: rgba(140, 108, 201, 0.08); border-radius: 100px; padding: 0.25rem; border: 1px solid rgba(140, 108, 201, 0.15);">
+                    <button id="theme-toggle" class="top-toggle-btn" aria-label="Toggle Dark Mode" style="background: transparent; border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--primary-color); transition: all 0.3s ease;">
+                        <i class="ph-bold ph-moon" style="font-size: 1.1rem;"></i>
+                    </button>
+                    <div style="width: 1px; height: 20px; background: rgba(140, 108, 201, 0.2); margin: 0 0.25rem;"></div>
+                    <button id="rtl-toggle" class="top-toggle-btn" aria-label="Toggle RTL" style="background: transparent; border: none; height: 36px; padding: 0 0.75rem; border-radius: 100px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--primary-color); font-size: 0.85rem; font-weight: 800; letter-spacing: 0.5px; transition: all 0.3s ease;">
+                        RTL
+                    </button>
+                </div>
+                <a href="login.html" class="btn btn-primary" style="box-shadow: 0 8px 16px rgba(140, 108, 201, 0.25); border-radius: 100px; padding: 0.6rem 1.5rem; font-weight: bold;">Login <i class="ph-bold ph-sign-in"></i></a>
+            </div>
+        
+            <button class="mobile-menu-toggle" aria-label="Open menu"><i class="ph-bold ph-list"></i></button>
+        </div>
+    </header>
+
+    <!-- SECTION 1: Hero -->
+    <section class="hero" style="padding: 2rem 0;">
+        <div class="container">
+            <div class="hero-card"
+                style="min-height: 350px; display: flex; align-items: center; justify-content: center; text-align: center;">
+                <div class="hero-content" style="max-width: 800px; margin: 0 auto;">
+                    <div class="hero-tag"><i class="ph-fill ph-info"></i> Our History</div>
+                    <h1>About PawPrints</h1>
+                    <p style="font-size: 1.25rem;">Learn about our mission, our passionate team, and our commitment to
+                        your pet's lifelong health.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: Our Story (White Background) -->
+    <section class="about-section" style="background-color: var(--white); padding: 5rem 0;">
+        <div class="container">
+            <div class="about-inner">
+                <div class="about-content" style="padding-right: 2rem;">
+                    <div class="hero-tag" style="background-color: var(--icon-bg); color: var(--primary-color);">Our
+                        Story</div>
+                    <h2 style="font-size: 2rem; margin-bottom: 1.5rem; color: var(--text-dark);">A Legacy of
+                        Compassionate Care</h2>
+                    <p style="font-size: 1rem; color: #4B5563; margin-bottom: 1.5rem; line-height: 1.8;">Founded in
+                        2010, PawPrints Veterinary began with a simple mission: to provide the highest standard of
+                        veterinary medicine with a gentle, loving touch.</p>
+                    <p style="font-size: 1rem; color: #4B5563; margin-bottom: 2rem; line-height: 1.8;">Over the years,
+                        we've grown from a small neighborhood clinic to a state-of-the-art medical facility, but our
+                        core values remain the same. We treat every pet as if they were our own, and every client like
+                        family.</p>
+                    <a href="contact.html" class="btn btn-primary">Visit Our Clinic <i
+                            class="ph ph-arrow-right"></i></a>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1544568100-847a948585b9?auto=format&fit=crop&w=800&q=80"
+                        alt="Happy dog looking up" class="main-img"
+                        style="width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg);">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: Core Values (Light Gray Background) -->
+    <section class="services-section" style="background-color: var(--bg-color); padding: 5rem 0;">
+        <div class="container">
+            <div class="section-header text-center">
+                <div class="hero-tag" style="background-color: var(--white); color: var(--primary-color);">Core Values
+                </div>
+                <h2>What Drives Us</h2>
+                <p>The principles that guide our everyday practice.</p>
+            </div>
+            <div class="services-grid" style="grid-template-columns: repeat(4, 1fr);">
+                <!-- 4 Value Cards -->
+                <div class="service-card" style="padding: 2.5rem 2rem; text-align: center;">
+                    <i class="ph-fill ph-heart"
+                        style="font-size: 3.5rem; color: var(--primary-color); margin-bottom: 1.5rem; display: block;"></i>
+                    <h3 style="margin-bottom: 1rem;">Compassion</h3>
+                    <p style="color: #6B7280; line-height: 1.6;">We treat every patient with tender loving care and deep
+                        empathy.</p>
+                </div>
+                <div class="service-card" style="padding: 2.5rem 2rem; text-align: center;">
+                    <i class="ph-fill ph-stethoscope"
+                        style="font-size: 3.5rem; color: var(--primary-color); margin-bottom: 1.5rem; display: block;"></i>
+                    <h3 style="margin-bottom: 1rem;">Excellence</h3>
+                    <p style="color: #6B7280; line-height: 1.6;">We uphold the highest medical standards in modern
+                        veterinary care.</p>
+                </div>
+                <div class="service-card" style="padding: 2.5rem 2rem; text-align: center;">
+                    <i class="ph-fill ph-handshake"
+                        style="font-size: 3.5rem; color: var(--primary-color); margin-bottom: 1.5rem; display: block;"></i>
+                    <h3 style="margin-bottom: 1rem;">Integrity</h3>
+                    <p style="color: #6B7280; line-height: 1.6;">Honest communication and transparent medical practices
+                        always.</p>
+                </div>
+                <div class="service-card" style="padding: 2.5rem 2rem; text-align: center;">
+                    <i class="ph-fill ph-users"
+                        style="font-size: 3.5rem; color: var(--primary-color); margin-bottom: 1.5rem; display: block;"></i>
+                    <h3 style="margin-bottom: 1rem;">Community</h3>
+                    <p style="color: #6B7280; line-height: 1.6;">Building lifelong, trusting relationships with pets and
+                        their owners.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: Meet The Team (White Background) -->
+    <section class="about-section" style="background-color: var(--white); padding: 5rem 0;">
+        <div class="container">
+            <div class="section-header text-center">
+                <div class="hero-tag" style="background-color: var(--icon-bg); color: var(--primary-color);">Our Team
+                </div>
+                <h2>Meet Our Specialists</h2>
+                <p>Dedicated professionals who love animals as much as you do.</p>
+            </div>
+            <div class="services-grid" style="grid-template-columns: repeat(4, 1fr);">
+                <!-- Team Card 1 -->
+                <div class="service-card"
+                    style="border: 1px solid #CBD5E1; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);">
+                    <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=400&q=80"
+                        alt="Dr. Sarah Jenkins" class="service-img" style="height: 250px;">
+                    <div class="service-content" style="text-align: center; padding: 1.5rem;">
+                        <h3 style="margin-bottom: 0.5rem; font-size: 1.4rem;">Dr. Sarah Jenkins</h3>
+                        <p
+                            style="color: var(--primary-color); font-weight: 600; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px;">
+                            Lead Surgeon</p>
+                    </div>
+                </div>
+                <!-- Team Card 2 -->
+                <div class="service-card"
+                    style="border: 1px solid #CBD5E1; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);">
+                    <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=400&q=80"
+                        alt="Dr. Michael Torres" class="service-img" style="height: 250px;">
+                    <div class="service-content" style="text-align: center; padding: 1.5rem;">
+                        <h3 style="margin-bottom: 0.5rem; font-size: 1.4rem;">Dr. Michael Torres</h3>
+                        <p
+                            style="color: var(--primary-color); font-weight: 600; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px;">
+                            Feline Specialist</p>
+                    </div>
+                </div>
+                <!-- Team Card 3 -->
+                <div class="service-card"
+                    style="border: 1px solid #CBD5E1; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);">
+                    <img src="https://images.unsplash.com/photo-1614608682850-e0d6ed316d47?auto=format&fit=crop&w=400&q=80"
+                        alt="Dr. Emily Chen" class="service-img" style="height: 250px;">
+                    <div class="service-content" style="text-align: center; padding: 1.5rem;">
+                        <h3 style="margin-bottom: 0.5rem; font-size: 1.4rem;">Dr. Emily Chen</h3>
+                        <p
+                            style="color: var(--primary-color); font-weight: 600; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px;">
+                            General Practice</p>
+                    </div>
+                </div>
+                <!-- Team Card 4 -->
+                <div class="service-card"
+                    style="border: 1px solid #CBD5E1; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);">
+                    <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=400&q=80"
+                        alt="Dr. David Miller" class="service-img" style="height: 250px;">
+                    <div class="service-content" style="text-align: center; padding: 1.5rem;">
+                        <h3 style="margin-bottom: 0.5rem; font-size: 1.4rem;">Dr. David Miller</h3>
+                        <p
+                            style="color: var(--primary-color); font-weight: 600; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px;">
+                            Dentistry</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: Clinic Gallery (Light Gray Background) -->
+    <section class="gallery-section" style="background-color: var(--bg-color); padding: 5rem 0;">
+        <div class="container">
+            <div class="section-header text-center">
+                <div class="hero-tag" style="background-color: var(--white); color: var(--primary-color);">Facility
+                </div>
+                <h2>A Peek Inside</h2>
+                <p>Clean, comfortable spaces designed for your pet's wellbeing.</p>
+            </div>
+            <div class="services-grid" style="grid-template-columns: repeat(4, 1fr); gap: 1rem;">
+                <img src="https://images.unsplash.com/photo-1558788353-f76d92427f16?auto=format&fit=crop&w=400&q=80"
+                    style="width: 100%; height: 250px; object-fit: cover; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
+                <img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=400&q=80"
+                    style="width: 100%; height: 250px; object-fit: cover; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
+                <img src="https://images.unsplash.com/photo-1513360371669-4adf3dd7dff8?auto=format&fit=crop&w=400&q=80"
+                    style="width: 100%; height: 250px; object-fit: cover; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
+                <img src="https://images.unsplash.com/photo-1561037404-61cd46aa615b?auto=format&fit=crop&w=400&q=80"
+                    style="width: 100%; height: 250px; object-fit: cover; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 6: FAQ (White Background) -->
+    <section class="testimonials-section" style="background-color: var(--white); padding: 5rem 0 10rem 0;">
+        <div class="container">
+            <div class="section-header text-center">
+                <div class="hero-tag" style="background-color: var(--icon-bg); color: var(--primary-color);">FAQ</div>
+                <h2>Common Questions</h2>
+                <p>Everything you need to know about our clinic.</p>
+            </div>
+            <div class="testimonials-wrapper" style="grid-template-columns: repeat(2, 1fr); margin-top: 2rem;">
+                <!-- 4 FAQ cards -->
+                <div class="testimonial-card">
+                    <h4 style="font-size: 1.2rem; color: var(--primary-color); margin-bottom: 1rem;">Are you accepting
+                        new patients?</h4>
+                    <p style="color: #4B5563; line-height: 1.6;">Yes, we are always happy to welcome new furry members
+                        to our clinic family! You can book your first appointment online or by calling our front desk.
+                    </p>
+                </div>
+                <div class="testimonial-card">
+                    <h4 style="font-size: 1.2rem; color: var(--primary-color); margin-bottom: 1rem;">Do you offer
+                        emergency services?</h4>
+                    <p style="color: #4B5563; line-height: 1.6;">We provide urgent care during our regular business
+                        hours and partner with local emergency hospitals for 24/7 after-hours care.</p>
+                </div>
+                <div class="testimonial-card">
+                    <h4 style="font-size: 1.2rem; color: var(--primary-color); margin-bottom: 1rem;">What payment
+                        methods do you accept?</h4>
+                    <p style="color: #4B5563; line-height: 1.6;">We accept all major credit cards, cash, and offer
+                        flexible payment plans through CareCredit to ensure your pet gets the care they need.</p>
+                </div>
+                <div class="testimonial-card">
+                    <h4 style="font-size: 1.2rem; color: var(--primary-color); margin-bottom: 1rem;">Can I tour the
+                        facility?</h4>
+                    <p style="color: #4B5563; line-height: 1.6;">Absolutely! We'd love to show you around. Give us a
+                        call to schedule a brief introductory tour of our state-of-the-art clinic.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 7: Floating Footer CTA & Main Footer -->
+    <footer class="site-footer">
+        <!-- Floating CTA -->
+        <div class="container">
+            <div class="floating-cta">
+                <div class="cta-content">
+                    <h2>Ready to give your pet the best care?</h2>
+                    <p>Schedule an appointment with our experienced team today and ensure your furry friend lives a
+                        long, healthy life.</p>
+                    <div class="cta-buttons">
+                        <a href="contact.html" class="btn btn-white"><i class="ph-fill ph-calendar-plus"></i> Book an
+                            Appointment</a>
+                        <a href="tel:+15551234567" class="btn btn-outline-white"><i class="ph-fill ph-phone-call"></i>
+                            (555) 123-4567</a>
+                    </div>
+                </div>
+                <div class="cta-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1544568100-847a948585b9?auto=format&fit=crop&w=400&q=80"
+                        alt="Happy dog in CTA">
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Links -->
+        <div class="container footer-main-content">
+            <div class="footer-grid">
+                <div class="footer-col footer-brand">
+                    <a href="index.html" class="logo" style="margin-bottom: var(--spacing-3);">
+                        <i class="ph-fill ph-paw-print logo-icon" style="color: var(--white);"></i>
+                        <div class="logo-text">
+                            <span class="logo-title" style="color: var(--white);">PawPrints</span>
+                            <span class="logo-subtitle" style="color: #A88DEB;">Veterinary</span>
+                        </div>
+                    </a>
+                    <p>Providing compassionate, advanced veterinary care for your furry family members in a
+                        state-of-the-art facility.</p>
+                    <div class="social-links">
+                        <a href="about.html"><i class="ph-fill ph-facebook-logo"></i></a>
+                        <a href="about.html"><i class="ph-fill ph-instagram-logo"></i></a>
+                        <a href="about.html"><i class="ph-fill ph-twitter-logo"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="services.html">Our Services</a></li>
+                        <li><a href="blog.html">Latest News</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="services.html">Wellness Exams</a></li>
+                        <li><a href="services.html">Pet Dentistry</a></li>
+                        <li><a href="services.html">Soft Tissue Surgery</a></li>
+                        <li><a href="contact.html">Emergency Care</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Get In Touch</h4>
+                    <ul class="contact-list">
+                        <li><i class="ph-fill ph-map-pin"></i> 123 Pet Lane, Cityville, ST 12345</li>
+                        <li><i class="ph-fill ph-phone"></i> <a href="tel:+15551234567"
+                                style="color: rgba(255,255,255,0.8);">(555) 123-4567</a></li>
+                        <li><i class="ph-fill ph-envelope"></i> <a href="mailto:hello@pawprints.com"
+                                style="color: rgba(255,255,255,0.8);">hello@pawprints.com</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 PawPrints Veterinary. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <a href="about.html">Privacy Policy</a>
+                    <a href="about.html">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/mobile-nav.js"></script>
+</body>
+
+</html>

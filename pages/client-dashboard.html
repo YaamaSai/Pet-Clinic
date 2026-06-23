@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Dashboard - PawPrints</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <style>
+        html { font-size: 14px; } /* Scales down all rem-based text sizes globally */
+        .dash-section { display: none; animation: fadeIn 0.3s ease; }
+        .dash-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .saved-card { border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem; display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-container {
+            background: #ffffff; border-radius: var(--radius-lg);
+            width: 100%; max-width: 500px; padding: 2rem; box-shadow: var(--shadow-lg);
+            transform: translateY(20px); transition: transform 0.3s ease;
+            max-height: 80vh; overflow-y: auto;
+            -ms-overflow-style: none; scrollbar-width: none;
+        }
+        .modal-container::-webkit-scrollbar { display: none; }
+        .modal-overlay.active .modal-container { transform: translateY(0); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .modal-title { font-size: 1.5rem; color: var(--text-dark); margin: 0; }
+
+        .modal-close { background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer; transition: color 0.2s ease; }
+        .modal-close:hover { color: var(--primary-color); }
+        .modal-container .auth-input { border: 1px solid #d1d5db; background: #ffffff; }
+    </style>
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-brand" style="display: flex; justify-content: space-between; align-items: center; width: 100%; padding-right: 1.5rem;">
+                <a href="index.html" class="logo" style="text-decoration: none;">
+                    <i class="ph-fill ph-paw-print logo-icon" style="color: var(--primary-color);"></i>
+                    <div class="logo-text">
+                        <span class="logo-title" style="color: var(--text-dark);">PawPrints</span>
+                        <span class="logo-subtitle" style="color: var(--text-muted); font-size: 0.8rem;">Client Portal</span>
+                    </div>
+                </a>
+                <button class="dash-sidebar-close" style="background: none; border: none; color: var(--text-dark); font-size: 1.5rem; cursor: pointer;"><i class="ph-bold ph-x"></i></button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="#" class="sidebar-link active" data-target="overview"><i class="ph ph-squares-four"></i> Overview</a>
+                <a href="#" class="sidebar-link" data-target="pets"><i class="ph ph-paw-print"></i> My Pets</a>
+                <a href="#" class="sidebar-link" data-target="appointments"><i class="ph ph-calendar-check"></i> Appointments</a>
+                <a href="#" class="sidebar-link" data-target="records"><i class="ph ph-file-text"></i> Medical Records</a>
+                <a href="#" class="sidebar-link" data-target="billing"><i class="ph ph-credit-card"></i> Billing & Payments</a>
+                <a href="#" class="sidebar-link" data-target="settings"><i class="ph ph-gear"></i> Settings</a>
+            </nav>
+            
+            <div style="margin-top: auto; padding-top: 2rem; border-top: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 1rem;">
+                <div style="display: flex; align-items: center; background: rgba(140, 108, 201, 0.08); border-radius: 100px; padding: 0.25rem; border: 1px solid rgba(140, 108, 201, 0.15); margin: 0 1rem; justify-content: center;">
+                    <button id="theme-toggle" class="top-toggle-btn" aria-label="Toggle Dark Mode" style="background: transparent; border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--primary-color); transition: all 0.3s ease;">
+                        <i class="ph-bold ph-moon" style="font-size: 1.1rem;"></i>
+                    </button>
+                    <div style="width: 1px; height: 20px; background: rgba(140, 108, 201, 0.2); margin: 0 0.25rem;"></div>
+                    <button id="rtl-toggle" class="top-toggle-btn" aria-label="Toggle RTL" style="background: transparent; border: none; height: 36px; padding: 0 0.75rem; border-radius: 100px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--primary-color); font-size: 0.85rem; font-weight: 800; letter-spacing: 0.5px; transition: all 0.3s ease;">
+                        RTL
+                    </button>
+                </div>
+                <a href="login.html" class="sidebar-link" style="color: #EF4444;"><i class="ph ph-sign-out"></i> Log Out</a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Header -->
+            <header class="dashboard-header">
+                <button class="dash-mobile-toggle" aria-label="Open dashboard menu"><i class="ph-bold ph-list"></i></button>
+                <div>
+                    <h1 id="header-title">Overview</h1>
+                    <p style="color: var(--text-muted); margin-top: 0.5rem;" id="header-subtitle">Here is what's happening with your pets today.</p>
+                </div>
+                <div class="user-profile-menu" style="margin-left: auto;">
+                    <img src="https://i.pravatar.cc/150?img=47" alt="Client" class="user-avatar">
+                </div>
+            </header>
+
+            <!-- SECTION 1: OVERVIEW -->
+            <section id="overview" class="dash-section active">
+                <div class="dash-grid">
+                    <div class="dash-card" style="background: linear-gradient(135deg, var(--primary-color), #D946EF); color: white; border: none;">
+                        <div class="dash-card-header">
+                            <h3 class="dash-card-title" style="color: white;">Next Appointment</h3>
+                            <i class="ph-fill ph-calendar-plus" style="font-size: 1.5rem; opacity: 0.8;"></i>
+                        </div>
+                        <h2 style="font-size: 2rem; margin: 0 0 0.5rem 0;">Tomorrow, 10:00 AM</h2>
+                        <p style="opacity: 0.9; margin: 0;">Vaccination for Max (Dog) • Dr. Smith</p>
+                    </div>
+                    
+                    <div class="dash-card">
+                        <div class="dash-stat">
+                            <div class="dash-stat-icon" style="background: rgba(245, 158, 11, 0.15); color: #D97706;">
+                                <i class="ph-fill ph-pill"></i>
+                            </div>
+                            <div class="dash-stat-info">
+                                <p>Medication Reminder</p>
+                                <h3 style="font-size: 1.25rem; margin-top: 0.25rem;">Heartgard Plus</h3>
+                                <p style="color: var(--primary-color); font-weight: 600; font-size: 0.85rem;">Due in 2 days for Bella</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dash-card">
+                        <div class="dash-stat">
+                            <div class="dash-stat-icon" style="background: rgba(16, 185, 129, 0.15); color: #059669;">
+                                <i class="ph-fill ph-credit-card"></i>
+                            </div>
+                            <div class="dash-stat-info">
+                                <p>Outstanding Balance</p>
+                                <h3>$0.00</h3>
+                                <p style="color: #059669; font-weight: 600; font-size: 0.85rem;">All caught up!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dash-card">
+                        <div class="dash-stat">
+                            <div class="dash-stat-icon" style="background: rgba(59, 130, 246, 0.15); color: #3B82F6;">
+                                <i class="ph-fill ph-prescription"></i>
+                            </div>
+                            <div class="dash-stat-info">
+                                <p>Active Prescriptions</p>
+                                <h3>2</h3>
+                                <p style="color: #3B82F6; font-weight: 600; font-size: 0.85rem;">Valid until Nov</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;">
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                            <h2 style="font-size: 1.5rem; margin: 0; color: var(--text-dark);">My Pets</h2>
+                            <button class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 100px;" onclick="document.querySelector('[data-target=\'pets\']').click()">View All</button>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 1rem;">
+                            <div class="dash-card" style="display: flex; align-items: center; gap: 1.25rem; padding: 1rem;">
+                                <img src="https://images.unsplash.com/photo-1544568100-847a948585b9?auto=format&fit=crop&w=150&q=80" alt="Max" style="width: 70px; height: 70px; border-radius: var(--radius-md); object-fit: cover;">
+                                <div>
+                                    <h3 style="margin: 0; font-size: 1.2rem; color: var(--text-dark);">Max</h3>
+                                    <p style="margin: 0.25rem 0 0 0; color: var(--text-muted); font-size: 0.9rem;">Golden Retriever • 3 yrs</p>
+                                </div>
+                            </div>
+                            <div class="dash-card" style="display: flex; align-items: center; gap: 1.25rem; padding: 1rem;">
+                                <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=150&q=80" alt="Bella" style="width: 70px; height: 70px; border-radius: var(--radius-md); object-fit: cover;">
+                                <div>
+                                    <h3 style="margin: 0; font-size: 1.2rem; color: var(--text-dark);">Bella</h3>
+                                    <p style="margin: 0.25rem 0 0 0; color: var(--text-muted); font-size: 0.9rem;">Siamese Cat • 2 yrs</p>
+                                </div>
+                            </div>
+                            <div class="dash-card" style="display: flex; align-items: center; gap: 1.25rem; padding: 1rem;">
+                                <img src="https://images.unsplash.com/photo-1511511450040-677116ff389e?auto=format&fit=crop&w=150&q=80" alt="Charlie" style="width: 70px; height: 70px; border-radius: var(--radius-md); object-fit: cover;">
+                                <div>
+                                    <h3 style="margin: 0; font-size: 1.2rem; color: var(--text-dark);">Charlie</h3>
+                                    <p style="margin: 0.25rem 0 0 0; color: var(--text-muted); font-size: 0.9rem;">Parrot • 1 yr</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h2 style="font-size: 1.5rem; margin: 0 0 1.5rem 0; color: var(--text-dark);">Recent Activity</h2>
+                        <div class="dash-table-wrapper">
+                            <table class="dash-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Description</th>
+                                        <th>Pet</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Oct 24, 2026</td>
+                                        <td><span style="font-weight: 500; color: var(--text-dark);">Annual Checkup</span></td>
+                                        <td>Max</td>
+                                        <td><span class="badge badge-success">Completed</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Oct 10, 2026</td>
+                                        <td><span style="font-weight: 500; color: var(--text-dark);">Prescription Refill</span></td>
+                                        <td>Bella</td>
+                                        <td><span class="badge badge-success">Picked Up</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sep 12, 2026</td>
+                                        <td><span style="font-weight: 500; color: var(--text-dark);">Dental Cleaning</span></td>
+                                        <td>Bella</td>
+                                        <td><span class="badge badge-success">Completed</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Aug 05, 2026</td>
+                                        <td><span style="font-weight: 500; color: var(--text-dark);">Wing Clipping</span></td>
+                                        <td>Charlie</td>
+                                        <td><span class="badge badge-success">Completed</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Jul 20, 2026</td>
+                                        <td><span style="font-weight: 500; color: var(--text-dark);">Vaccination Booster</span></td>
+                                        <td>Max</td>
+                                        <td><span class="badge badge-success">Completed</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Jun 15, 2026</td>
+                                        <td><span style="font-weight: 500; color: var(--text-dark);">New Patient Exam</span></td>
+                                        <td>Charlie</td>
+                                        <td><span class="badge badge-success">Completed</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 2: MY PETS -->
+            <section id="pets" class="dash-section">
+                <div class="dash-section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h2 style="font-size: 1.8rem; margin: 0; color: var(--text-dark);">Registered Pets</h2>
+                    <button class="btn btn-primary" style="border-radius: 100px;" onclick="openModal('addPetModal')"><i class="ph-bold ph-plus"></i> Add New Pet</button>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                    <!-- Max -->
+                    <div class="dash-card pet-profile-card">
+                        <div class="pet-card-banner"></div>
+                        <div class="pet-card-body">
+                            <img src="https://images.unsplash.com/photo-1544568100-847a948585b9?auto=format&fit=crop&w=300&q=80" alt="Max" class="pet-card-avatar">
+                            <h3 style="font-size: 1.5rem; margin: 0 0 0.25rem 0; color: var(--text-dark);">Max</h3>
+                            <p style="color: var(--text-muted); margin: 0 0 1.5rem 0;">Golden Retriever • Male • 3 yrs</p>
+                            <div class="pet-card-stats">
+                                <div class="pet-stat-badge">
+                                    <span class="pet-stat-label">Weight</span>
+                                    <span class="pet-stat-value" style="color: var(--primary-color);">65 lbs</span>
+                                </div>
+                                <div class="pet-stat-badge" style="background: rgba(16, 185, 129, 0.1);">
+                                    <span class="pet-stat-label" style="color: #059669;">Status</span>
+                                    <span class="pet-stat-value" style="color: #059669;">Healthy</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" style="width: 100%; border-radius: 100px;">View Full Profile</button>
+                        </div>
+                    </div>
+                    <!-- Bella -->
+                    <div class="dash-card pet-profile-card">
+                        <div class="pet-card-banner" style="background: linear-gradient(135deg, #FDBA74, #F97316);"></div>
+                        <div class="pet-card-body">
+                            <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=300&q=80" alt="Bella" class="pet-card-avatar">
+                            <h3 style="font-size: 1.5rem; margin: 0 0 0.25rem 0; color: var(--text-dark);">Bella</h3>
+                            <p style="color: var(--text-muted); margin: 0 0 1.5rem 0;">Siamese Cat • Female • 2 yrs</p>
+                            <div class="pet-card-stats">
+                                <div class="pet-stat-badge">
+                                    <span class="pet-stat-label">Weight</span>
+                                    <span class="pet-stat-value" style="color: var(--primary-color);">9 lbs</span>
+                                </div>
+                                <div class="pet-stat-badge" style="background: rgba(16, 185, 129, 0.1);">
+                                    <span class="pet-stat-label" style="color: #059669;">Status</span>
+                                    <span class="pet-stat-value" style="color: #059669;">Healthy</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" style="width: 100%; border-radius: 100px;">View Full Profile</button>
+                        </div>
+                    </div>
+                    <!-- Charlie -->
+                    <div class="dash-card pet-profile-card">
+                        <div class="pet-card-banner" style="background: linear-gradient(135deg, #6EE7B7, #10B981);"></div>
+                        <div class="pet-card-body">
+                            <img src="https://images.unsplash.com/photo-1511511450040-677116ff389e?auto=format&fit=crop&w=300&q=80" alt="Charlie" class="pet-card-avatar">
+                            <h3 style="font-size: 1.5rem; margin: 0 0 0.25rem 0; color: var(--text-dark);">Charlie</h3>
+                            <p style="color: var(--text-muted); margin: 0 0 1.5rem 0;">Parrot • Male • 1 yr</p>
+                            <div class="pet-card-stats">
+                                <div class="pet-stat-badge">
+                                    <span class="pet-stat-label">Weight</span>
+                                    <span class="pet-stat-value" style="color: var(--primary-color);">1.2 lbs</span>
+                                </div>
+                                <div class="pet-stat-badge" style="background: rgba(16, 185, 129, 0.1);">
+                                    <span class="pet-stat-label" style="color: #059669;">Status</span>
+                                    <span class="pet-stat-value" style="color: #059669;">Healthy</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" style="width: 100%; border-radius: 100px;">View Full Profile</button>
+                        </div>
+                    </div>
+                    <!-- Add Another Pet -->
+                    <div class="dash-card pet-profile-card" style="display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 350px; border: 2px dashed var(--border-color); background: transparent; cursor: pointer;" onclick="openModal('addPetModal')">
+                        <div class="pet-card-avatar" style="border: none; background: var(--bg-color); color: var(--primary-color); font-size: 3rem; margin-top: 50px;">
+                            <i class="ph-bold ph-plus"></i>
+                        </div>
+                        <h3 style="font-size: 1.5rem; margin: 0 0 0.25rem 0; color: var(--text-dark);">Add Another Pet</h3>
+                        <p style="color: var(--text-muted); margin: 0 0 1.5rem 0;">Keep all your pet records in one place.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 3: APPOINTMENTS -->
+            <section id="appointments" class="dash-section">
+                <div class="dash-section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h2 style="font-size: 1.8rem; margin: 0; color: var(--text-dark);">Appointments History</h2>
+                    <button class="btn btn-primary" style="border-radius: 100px;" onclick="openModal('clientBookingModal')"><i class="ph-bold ph-calendar-plus"></i> Book Appointment</button>
+                </div>
+                <div class="dash-table-wrapper">
+                    <table class="dash-table">
+                        <thead>
+                            <tr>
+                                <th>Date & Time</th>
+                                <th>Pet</th>
+                                <th>Reason</th>
+                                <th>Doctor</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="font-weight: 600; color: var(--text-dark);">Tomorrow, 10:00 AM</td>
+                                <td>Max</td>
+                                <td>Annual Vaccination</td>
+                                <td>Dr. Smith</td>
+                                <td><span class="badge badge-warning">Upcoming</span></td>
+                                <td>
+                                    <button class="btn btn-outline" style="padding: 0.25rem 0.75rem; font-size: 0.8rem;">Reschedule</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 600; color: var(--text-dark);">Nov 15, 2026, 03:00 PM</td>
+                                <td>Bella</td>
+                                <td>Follow-up Exam</td>
+                                <td>Dr. Lee</td>
+                                <td><span class="badge badge-warning">Upcoming</span></td>
+                                <td>
+                                    <button class="btn btn-outline" style="padding: 0.25rem 0.75rem; font-size: 0.8rem;">Reschedule</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Oct 24, 2026, 02:15 PM</td>
+                                <td>Max</td>
+                                <td>General Checkup</td>
+                                <td>Dr. Lee</td>
+                                <td><span class="badge badge-success">Completed</span></td>
+                                <td><a href="#" style="color: var(--primary-color); font-size: 0.9rem; font-weight: bold;">View Notes</a></td>
+                            </tr>
+                            <tr>
+                                <td>Sep 12, 2026, 09:30 AM</td>
+                                <td>Bella</td>
+                                <td>Dental Cleaning</td>
+                                <td>Dr. Wilson</td>
+                                <td><span class="badge badge-success">Completed</span></td>
+                                <td><a href="#" style="color: var(--primary-color); font-size: 0.9rem; font-weight: bold;">View Notes</a></td>
+                            </tr>
+                            <tr>
+                                <td>Aug 05, 2026, 11:00 AM</td>
+                                <td>Charlie</td>
+                                <td>Wing Clipping</td>
+                                <td>Dr. Smith</td>
+                                <td><span class="badge badge-success">Completed</span></td>
+                                <td><a href="#" style="color: var(--primary-color); font-size: 0.9rem; font-weight: bold;">View Notes</a></td>
+                            </tr>
+                            <tr>
+                                <td>Jul 20, 2026, 01:45 PM</td>
+                                <td>Max</td>
+                                <td>Vaccination Booster</td>
+                                <td>Dr. Smith</td>
+                                <td><span class="badge badge-success">Completed</span></td>
+                                <td><a href="#" style="color: var(--primary-color); font-size: 0.9rem; font-weight: bold;">View Notes</a></td>
+                            </tr>
+                            <tr>
+                                <td>Jun 15, 2026, 10:00 AM</td>
+                                <td>Charlie</td>
+                                <td>New Patient Exam</td>
+                                <td>Dr. Lee</td>
+                                <td><span class="badge badge-success">Completed</span></td>
+                                <td><a href="#" style="color: var(--primary-color); font-size: 0.9rem; font-weight: bold;">View Notes</a></td>
+                            </tr>
+                            <tr>
+                                <td>May 02, 2026, 04:30 PM</td>
+                                <td>Bella</td>
+                                <td>Allergy Consultation</td>
+                                <td>Dr. Wilson</td>
+                                <td><span class="badge badge-success">Completed</span></td>
+                                <td><a href="#" style="color: var(--primary-color); font-size: 0.9rem; font-weight: bold;">View Notes</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- SECTION 4: MEDICAL RECORDS -->
+            <section id="records" class="dash-section">
+                <h2 style="font-size: 1.8rem; margin: 0 0 2rem 0; color: var(--text-dark);">Medical Records & Documents</h2>
+                <div class="dash-grid">
+                    <div class="dash-card">
+                        <div class="dash-card-header" style="margin-bottom: 1rem;">
+                            <i class="ph-fill ph-file-pdf" style="font-size: 2.5rem; color: #EF4444;"></i>
+                            <span class="badge badge-primary">Max</span>
+                        </div>
+                        <h4 style="margin: 0 0 0.5rem 0; font-size: 1.1rem; color: var(--text-dark);">Rabies Vaccination Certificate</h4>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem;">Issued: Oct 24, 2026</p>
+                        <button class="btn btn-outline" style="width: 100%; border-radius: 100px;"><i class="ph-bold ph-download-simple"></i> Download PDF</button>
+                    </div>
+                    <div class="dash-card">
+                        <div class="dash-card-header" style="margin-bottom: 1rem;">
+                            <i class="ph-fill ph-file-pdf" style="font-size: 2.5rem; color: #EF4444;"></i>
+                            <span class="badge" style="background: rgba(245, 158, 11, 0.15); color: #D97706;">Bella</span>
+                        </div>
+                        <h4 style="margin: 0 0 0.5rem 0; font-size: 1.1rem; color: var(--text-dark);">Dental X-Rays</h4>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem;">Issued: Sep 12, 2026</p>
+                        <button class="btn btn-outline" style="width: 100%; border-radius: 100px;"><i class="ph-bold ph-download-simple"></i> Download PDF</button>
+                    </div>
+                    <div class="dash-card">
+                        <div class="dash-card-header" style="margin-bottom: 1rem;">
+                            <i class="ph-fill ph-file-pdf" style="font-size: 2.5rem; color: #EF4444;"></i>
+                            <span class="badge badge-primary">Max</span>
+                        </div>
+                        <h4 style="margin: 0 0 0.5rem 0; font-size: 1.1rem; color: var(--text-dark);">Blood Test Results</h4>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem;">Issued: Jul 20, 2026</p>
+                        <button class="btn btn-outline" style="width: 100%; border-radius: 100px;"><i class="ph-bold ph-download-simple"></i> Download PDF</button>
+                    </div>
+                    <div class="dash-card">
+                        <div class="dash-card-header" style="margin-bottom: 1rem;">
+                            <i class="ph-fill ph-file-pdf" style="font-size: 2.5rem; color: #EF4444;"></i>
+                            <span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #059669;">Charlie</span>
+                        </div>
+                        <h4 style="margin: 0 0 0.5rem 0; font-size: 1.1rem; color: var(--text-dark);">Avian Health Screen</h4>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem;">Issued: Jun 15, 2026</p>
+                        <button class="btn btn-outline" style="width: 100%; border-radius: 100px;"><i class="ph-bold ph-download-simple"></i> Download PDF</button>
+                    </div>
+                    <div class="dash-card" style="grid-column: 1 / -1; border: 2px dashed var(--primary-light); background: rgba(140, 108, 201, 0.05); display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-dark); padding: 2.5rem;">
+                        <i class="ph-bold ph-file-plus" style="font-size: 2.5rem; margin-bottom: 1rem; color: var(--primary-color);"></i>
+                        <h4 style="margin: 0 0 0.5rem 0;">Request Past Records</h4>
+                        <p style="font-size: 0.85rem; text-align: center; color: var(--text-muted);">Contact the clinic to digitize older paper records.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 5: BILLING & PAYMENTS -->
+            <section id="billing" class="dash-section">
+                <div class="dash-section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h2 style="font-size: 1.8rem; margin: 0; color: var(--text-dark);">Billing & Payments</h2>
+                    <button class="btn btn-primary" style="border-radius: 100px;" onclick="openModal('paymentModal')"><i class="ph-bold ph-credit-card"></i> Make a Payment</button>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+                    <div class="dash-card" style="background: rgba(16, 185, 129, 0.05); border-color: rgba(16, 185, 129, 0.2);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; height: 100%;">
+                            <div>
+                                <p style="color: var(--text-muted); margin: 0 0 0.25rem 0; font-weight: 500;">Current Balance</p>
+                                <h2 style="font-size: 3rem; margin: 0; color: var(--text-dark);">$0.00</h2>
+                            </div>
+                            <i class="ph-fill ph-check-circle" style="font-size: 4rem; color: #10B981;"></i>
+                        </div>
+                    </div>
+                    <div class="dash-card">
+                        <h3 style="font-size: 1.1rem; margin: 0 0 1rem 0; color: var(--text-dark);">Saved Payment Methods</h3>
+                        <div class="saved-card">
+                            <i class="ph-fill ph-credit-card" style="font-size: 2rem; color: var(--primary-color);"></i>
+                            <div>
+                                <p style="margin: 0; font-weight: 600; color: var(--text-dark);">Visa ending in 4242</p>
+                                <p style="margin: 0; font-size: 0.85rem; color: var(--text-muted);">Expires 12/28</p>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline" style="width: 100%; border-radius: 100px; padding: 0.5rem;"><i class="ph-bold ph-plus"></i> Add Method</button>
+                    </div>
+                </div>
+
+                <h3 style="font-size: 1.25rem; margin: 0 0 1rem 0; color: var(--text-dark);">Payment History</h3>
+                <div class="dash-table-wrapper">
+                    <table class="dash-table">
+                        <thead>
+                            <tr>
+                                <th>Invoice ID</th>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Receipt</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#INV-2026-889</td>
+                                <td>Oct 24, 2026</td>
+                                <td>Annual Checkup - Max</td>
+                                <td style="font-weight: 600;">$125.00</td>
+                                <td><span class="badge badge-success">Paid</span></td>
+                                <td><i class="ph-bold ph-download-simple" style="cursor: pointer; color: var(--primary-color); font-size: 1.2rem;"></i></td>
+                            </tr>
+                            <tr>
+                                <td>#INV-2026-821</td>
+                                <td>Oct 10, 2026</td>
+                                <td>Medication Refill - Bella</td>
+                                <td style="font-weight: 600;">$45.00</td>
+                                <td><span class="badge badge-success">Paid</span></td>
+                                <td><i class="ph-bold ph-download-simple" style="cursor: pointer; color: var(--primary-color); font-size: 1.2rem;"></i></td>
+                            </tr>
+                            <tr>
+                                <td>#INV-2026-642</td>
+                                <td>Sep 12, 2026</td>
+                                <td>Dental Cleaning - Bella</td>
+                                <td style="font-weight: 600;">$240.00</td>
+                                <td><span class="badge badge-success">Paid</span></td>
+                                <td><i class="ph-bold ph-download-simple" style="cursor: pointer; color: var(--primary-color); font-size: 1.2rem;"></i></td>
+                            </tr>
+                            <tr>
+                                <td>#INV-2026-511</td>
+                                <td>Aug 05, 2026</td>
+                                <td>Wing Clipping - Charlie</td>
+                                <td style="font-weight: 600;">$35.00</td>
+                                <td><span class="badge badge-success">Paid</span></td>
+                                <td><i class="ph-bold ph-download-simple" style="cursor: pointer; color: var(--primary-color); font-size: 1.2rem;"></i></td>
+                            </tr>
+                            <tr>
+                                <td>#INV-2026-402</td>
+                                <td>Jul 20, 2026</td>
+                                <td>Vaccination Booster - Max</td>
+                                <td style="font-weight: 600;">$85.00</td>
+                                <td><span class="badge badge-success">Paid</span></td>
+                                <td><i class="ph-bold ph-download-simple" style="cursor: pointer; color: var(--primary-color); font-size: 1.2rem;"></i></td>
+                            </tr>
+                            <tr>
+                                <td>#INV-2026-301</td>
+                                <td>Jun 15, 2026</td>
+                                <td>New Patient Exam - Charlie</td>
+                                <td style="font-weight: 600;">$110.00</td>
+                                <td><span class="badge badge-success">Paid</span></td>
+                                <td><i class="ph-bold ph-download-simple" style="cursor: pointer; color: var(--primary-color); font-size: 1.2rem;"></i></td>
+                            </tr>
+                            <tr>
+                                <td>#INV-2026-150</td>
+                                <td>May 02, 2026</td>
+                                <td>Allergy Consultation - Bella</td>
+                                <td style="font-weight: 600;">$150.00</td>
+                                <td><span class="badge badge-success">Paid</span></td>
+                                <td><i class="ph-bold ph-download-simple" style="cursor: pointer; color: var(--primary-color); font-size: 1.2rem;"></i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            
+            <!-- SECTION 6: SETTINGS -->
+            <section id="settings" class="dash-section">
+                <h2 style="font-size: 1.8rem; margin: 0 0 2rem 0; color: var(--text-dark);">Account Settings</h2>
+                
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
+                    <div>
+                        <div class="dash-card" style="margin-bottom: 2rem;">
+                            <h3 style="font-size: 1.25rem; margin: 0 0 1.5rem 0; color: var(--text-dark); border-bottom: 1px solid var(--border-color); padding-bottom: 1rem;">Personal Information</h3>
+                            <form class="auth-form">
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                                    <div class="auth-input-group" style="margin: 0;">
+                                        <label>First Name</label>
+                                        <input type="text" class="auth-input" value="Sarah">
+                                    </div>
+                                    <div class="auth-input-group" style="margin: 0;">
+                                        <label>Last Name</label>
+                                        <input type="text" class="auth-input" value="Connor">
+                                    </div>
+                                    <div class="auth-input-group" style="margin: 0;">
+                                        <label>Email Address</label>
+                                        <input type="email" class="auth-input" value="sarah.c@example.com">
+                                    </div>
+                                    <div class="auth-input-group" style="margin: 0;">
+                                        <label>Phone Number</label>
+                                        <input type="text" class="auth-input" value="+1 (555) 987-6543">
+                                    </div>
+                                </div>
+                                <div class="auth-input-group" style="margin-top: 1.5rem;">
+                                    <label>Home Address</label>
+                                    <input type="text" class="auth-input" value="456 Oak Lane, Springville, NY 12345">
+                                </div>
+                                <button type="button" class="btn btn-primary" style="margin-top: 1rem;">Update Profile</button>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    
+                    <div>
+                        <div class="dash-card">
+                            <h3 style="font-size: 1.25rem; margin: 0 0 1.5rem 0; color: var(--text-dark); border-bottom: 1px solid var(--border-color); padding-bottom: 1rem;">Notifications</h3>
+                            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                                <div>
+                                    <h4 style="margin: 0 0 0.5rem 0; color: var(--text-dark);">Appointment Reminders</h4>
+                                    <label style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; cursor: pointer;">
+                                        <input type="checkbox" checked> Send via Email
+                                    </label>
+                                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                        <input type="checkbox" checked> Send via SMS
+                                    </label>
+                                </div>
+                                <div>
+                                    <h4 style="margin: 0 0 0.5rem 0; color: var(--text-dark);">Medication Alerts</h4>
+                                    <label style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; cursor: pointer;">
+                                        <input type="checkbox" checked> Send via Email
+                                    </label>
+                                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                        <input type="checkbox"> Send via SMS
+                                    </label>
+                                </div>
+                                <div>
+                                    <h4 style="margin: 0 0 0.5rem 0; color: var(--text-dark);">Clinic Newsletter</h4>
+                                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                        <input type="checkbox" checked> Subscribe to updates
+                                    </label>
+                                </div>
+                                <button class="btn btn-primary" style="width: 100%;">Save Preferences</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dash-card">
+                    <h3 style="font-size: 1.25rem; margin: 0 0 1.5rem 0; color: var(--text-dark); border-bottom: 1px solid var(--border-color); padding-bottom: 1rem;">Security Settings</h3>
+                    <form class="auth-form">
+                        <div class="auth-input-group">
+                            <label>Current Password</label>
+                            <input type="password" class="auth-input" placeholder="Enter current password">
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                            <div class="auth-input-group" style="margin: 0;">
+                                <label>New Password</label>
+                                <input type="password" class="auth-input" placeholder="New password">
+                            </div>
+                            <div class="auth-input-group" style="margin: 0;">
+                                <label>Confirm Password</label>
+                                <input type="password" class="auth-input" placeholder="Confirm password">
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-outline" style="margin-top: 1.5rem;">Change Password</button>
+                    </form>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Client Booking Modal -->
+    <div class="modal-overlay" id="clientBookingModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">Book an Appointment</h3>
+                <button class="modal-close" onclick="closeModal('clientBookingModal')"><i class="ph-bold ph-x"></i></button>
+            </div>
+            <form class="auth-form">
+                <div class="auth-input-group">
+                    <label>Select Pet</label>
+                    <select class="auth-input">
+                        <option>Max (Golden Retriever)</option>
+                        <option>Bella (Siamese Cat)</option>
+                        <option>Charlie (Parrot)</option>
+                    </select>
+                </div>
+                <div class="auth-input-group">
+                    <label>Reason for Visit</label>
+                    <select class="auth-input">
+                        <option>Annual Wellness Exam</option>
+                        <option>Vaccination Booster</option>
+                        <option>Illness / Injury</option>
+                        <option>Dental Cleaning</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                    <div class="auth-input-group" style="margin: 0;">
+                        <label>Preferred Date</label>
+                        <input type="date" class="auth-input">
+                    </div>
+                    <div class="auth-input-group" style="margin: 0;">
+                        <label>Preferred Time</label>
+                        <select class="auth-input">
+                            <option>Morning (8AM - 12PM)</option>
+                            <option>Afternoon (12PM - 4PM)</option>
+                            <option>Evening (4PM - 7PM)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="auth-input-group" style="margin-top: 1.5rem;">
+                    <label>Additional Notes</label>
+                    <textarea class="auth-input" rows="3" placeholder="Any special instructions or symptoms?"></textarea>
+                </div>
+                <button type="button" class="btn btn-primary" style="width: 100%; margin-top: 1rem;" onclick="closeModal('clientBookingModal')">Submit Request</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Pet Modal -->
+    <div class="modal-overlay" id="addPetModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">Register a New Pet</h3>
+                <button class="modal-close" onclick="closeModal('addPetModal')"><i class="ph-bold ph-x"></i></button>
+            </div>
+            <form class="auth-form">
+                <div class="auth-input-group">
+                    <label>Pet Name</label>
+                    <input type="text" class="auth-input" placeholder="Enter pet name">
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                    <div class="auth-input-group" style="margin: 0;">
+                        <label>Species</label>
+                        <select class="auth-input">
+                            <option>Dog</option>
+                            <option>Cat</option>
+                            <option>Bird</option>
+                            <option>Reptile</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="auth-input-group" style="margin: 0;">
+                        <label>Breed</label>
+                        <input type="text" class="auth-input" placeholder="e.g. Siamese">
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem;">
+                    <div class="auth-input-group" style="margin: 0;">
+                        <label>Age / Date of Birth</label>
+                        <input type="text" class="auth-input" placeholder="e.g. 2 years">
+                    </div>
+                    <div class="auth-input-group" style="margin: 0;">
+                        <label>Gender</label>
+                        <select class="auth-input">
+                            <option>Male</option>
+                            <option>Female</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="auth-input-group" style="margin-top: 1.5rem;">
+                    <label>Current Weight (lbs)</label>
+                    <input type="number" class="auth-input" placeholder="e.g. 15">
+                </div>
+                <button type="button" class="btn btn-primary" style="width: 100%; margin-top: 1rem;" onclick="closeModal('addPetModal')">Submit Registration</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="modal-overlay" id="paymentModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">Make a Payment</h3>
+                <button class="modal-close" onclick="closeModal('paymentModal')"><i class="ph-bold ph-x"></i></button>
+            </div>
+            <form class="auth-form">
+                <div class="auth-input-group">
+                    <label>Invoice Number</label>
+                    <input type="text" class="auth-input" placeholder="e.g. #INV-2026-511">
+                </div>
+                <div class="auth-input-group">
+                    <label>Payment Amount ($)</label>
+                    <input type="number" class="auth-input" placeholder="e.g. 50.00">
+                </div>
+                <div class="auth-input-group">
+                    <label>Payment Method</label>
+                    <select class="auth-input">
+                        <option>Credit / Debit Card</option>
+                        <option>Bank Transfer</option>
+                        <option>PayPal</option>
+                    </select>
+                </div>
+                <button type="button" class="btn btn-primary" style="width: 100%; margin-top: 1rem;" onclick="closeModal('paymentModal')">Submit Payment</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Modal Logic
+        function openModal(id) {
+            document.getElementById(id).classList.add('active');
+        }
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+        // Close modal if clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal-overlay')) {
+                event.target.classList.remove('active');
+            }
+        }
+
+        // Dark Mode Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        themeToggle.addEventListener('click', () => {
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                themeToggle.innerHTML = '<i class="ph-fill ph-moon"></i>';
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                themeToggle.innerHTML = '<i class="ph-fill ph-sun"></i>';
+            }
+        });
+
+        // RTL Toggle Logic (Mirror Effect)
+        const rtlToggle = document.getElementById('rtl-toggle');
+        rtlToggle.addEventListener('click', () => {
+            const currentDir = document.documentElement.getAttribute('dir') || 'ltr';
+            if (currentDir === 'ltr') {
+                document.documentElement.setAttribute('dir', 'rtl');
+            } else {
+                document.documentElement.setAttribute('dir', 'ltr');
+            }
+        });
+
+        // Tab Switching Logic
+        const links = document.querySelectorAll('.sidebar-link[data-target]');
+        const sections = document.querySelectorAll('.dash-section');
+        const headerSubtitle = document.getElementById('header-subtitle');
+        const headerTitle = document.getElementById('header-title');
+        
+        const titles = {
+            'overview': "Overview",
+            'pets': "My Pets",
+            'appointments': "Appointments",
+            'records': "Medical Records",
+            'billing': "Billing & Payments",
+            'settings': "Account Settings"
+        };
+
+        const subtitles = {
+            'overview': "Here is what's happening with your pets today.",
+            'pets': "Manage profiles for your furry family members.",
+            'appointments': "View and manage your upcoming visits.",
+            'records': "Access test results and vaccination history.",
+            'billing': "Manage invoices and payment methods.",
+            'settings': "Update your personal information and preferences."
+        };
+
+        links.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Remove active from all links and sections
+                links.forEach(l => l.classList.remove('active'));
+                sections.forEach(s => s.classList.remove('active'));
+                
+                // Add active to clicked link and target section
+                link.classList.add('active');
+                const targetId = link.getAttribute('data-target');
+                document.getElementById(targetId).classList.add('active');
+                
+                // Force scroll to top when switching pages
+                window.scrollTo(0, 0);
+                const mainScroll = document.querySelector('.dashboard-main');
+                if (mainScroll) mainScroll.scrollTop = 0;
+                
+                // Update title and subtitle
+                if(titles[targetId]) {
+                    headerTitle.innerText = titles[targetId];
+                }
+                if(subtitles[targetId]) {
+                    headerSubtitle.innerText = subtitles[targetId];
+                }
+            });
+        });
+    </script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/mobile-nav.js"></script>
+</body>
+</html>
