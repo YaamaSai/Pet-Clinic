@@ -673,6 +673,22 @@
         transform: translateX(50%);
     }
 
+    /* Increase logo size on mobile/tablet for Home 1 and Home 2 */
+    .home-page .header-inner .logo-icon,
+    .home-page-2-extreme .header-inner .logo-icon {
+        font-size: 2.2rem;
+    }
+    
+    .home-page .header-inner .logo-title,
+    .home-page-2-extreme .header-inner .logo-title {
+        font-size: 1.6rem;
+    }
+    
+    .home-page .header-inner .logo-subtitle,
+    .home-page-2-extreme .header-inner .logo-subtitle {
+        font-size: 1.1rem;
+    }
+
     /* Mobile Nav Button */
     .mobile-menu-toggle {
         display: flex;
@@ -738,7 +754,8 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 1rem;
+        margin-top: 2rem;
+        margin-bottom: 2rem;
         padding-bottom: 1.5rem;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }

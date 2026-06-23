@@ -10,6 +10,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     window.scrollTo(0, 0);
 
+    // Add PawPrints Favicon Dynamically
+    if (!document.querySelector("link[rel*='icon']")) {
+        const favicon = document.createElement('link');
+        favicon.rel = 'icon';
+        favicon.type = 'image/svg+xml';
+        favicon.href = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path fill="%238C6CC9" d="M192,72a32,32,0,1,0-32-32A32,32,0,0,0,192,72ZM64,72A32,32,0,1,0,32,40,32,32,0,0,0,64,72Zm126.85,58.33A24.16,24.16,0,0,0,172,128a30.86,30.86,0,0,0-17.65,5.55C146.46,139,139.79,144,128,144s-18.46-5-26.35-10.45A30.86,30.86,0,0,0,84,128a24.16,24.16,0,0,0-18.85,2.33C47.88,140.7,35.25,165.73,32.22,185.34a26.24,26.24,0,0,0,12.59,25.46C56,217.43,73.1,224,96,224a91.56,91.56,0,0,0,32-5.74A91.56,91.56,0,0,0,160,224c22.9,0,40-6.57,51.19-13.2a26.24,26.24,0,0,0,12.59-25.46C220.75,165.73,208.12,140.7,190.85,130.33ZM224,64a24,24,0,1,0-24,24A24,24,0,0,0,224,64ZM80,88A24,24,0,1,0,56,64,24,24,0,0,0,80,88Z"/></svg>';
+        document.head.appendChild(favicon);
+    }
+
     // 1. Initialize Settings from LocalStorage
     const savedTheme = localStorage.getItem('theme') || 'light';
     const savedDir = localStorage.getItem('dir') || 'ltr';

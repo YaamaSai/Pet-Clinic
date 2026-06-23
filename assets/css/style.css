@@ -577,59 +577,59 @@ p {
 
 .service-img {
   width: 100%;
-  height: 250px;
+  height: 180px;
   object-fit: cover;
-  border-radius: 2rem 2rem 0 0;
+  border-radius: 1.5rem 1.5rem 0 0;
   background-color: #EAE6F5;
 }
 
 .service-content {
-  padding: 4.5rem 2rem 2.5rem;
+  padding: 3rem 1.5rem 1.5rem;
   position: relative;
   background: linear-gradient(to bottom, #F8F5FF, #ffffff);
   border-top: none;
-  border-radius: 0 0 2rem 2rem;
+  border-radius: 0 0 1.5rem 1.5rem;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   flex-grow: 1;
 }
 
 .service-icon {
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
   background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
   color: var(--white);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
+  font-size: 1.5rem;
   box-shadow: 0 8px 16px rgba(140, 108, 201, 0.2);
   position: absolute;
   top: 0;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 2;
-  border: 6px solid var(--white);
+  border: 4px solid var(--white);
   margin: 0;
 }
 
 .service-content h3 {
-  font-size: 1.6rem;
+  font-size: 1.25rem;
   font-weight: 800;
   color: var(--text-dark);
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.4rem;
   width: 100%;
-  text-align: left;
+  text-align: center;
 }
 
 .service-content p {
-  font-size: 1.05rem;
-  line-height: 1.6;
+  font-size: 0.95rem;
+  line-height: 1.5;
   color: #4B5563;
   margin-bottom: 0;
-  text-align: left;
+  text-align: center;
 }
 
 /* Section 4: About Us */
